@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-tw">
+<head>               
+	<title>氣泡排序法</title>
+	<meta charset="utf-8">
+	<meta name="author" content="Michael Yang">
+	<meta name="keywords" content="MY學習筆記, 資料結構與演算法, 氣泡排序, bubble sort">
+	<meta name="description" content="又到了學期即將結束的6月，MY老師面對著總共有87份的材料科學與工程導論考卷，非常頭疼。就在上周同學們考完材導期末考，最終學期總成績也都出爐，這時老師想要知道:...">
+	<meta name="subject" content="氣泡排序法">
+	<meta name="revised" content="Sunday, Aug 21th, 2022">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE-edge">
+	<link rel="stylesheet" href="../css/content.css">
+	<script type="text/javascript" src="../js/jquery-3.6.0.js"></script>
+	<script type="text/javascript" src="../js/ctg2.js"></script>
+</head>
+<body>
+	<header class="header" >
+		<div class="header_logo">
+			<img src="../pics/logo.png" alt="logo">
+		</div>
+		<div class="header_title">
+			<h1 id="top"><a href="../index.html">MY學習筆記</a></h1>
+		</div>
+		<div class="header_search">
+			<input id="search_keyword" type="text" name="search_keyword"  placeholder="搜尋" >
+			<img id="search_img" src="../pics/search.png">
+		</div>
+	</header>
+	<nav>
+		<div class="catalog_select">
+			<span><img src="../pics/catalog_select_arrow.png" alt="arrow">全部類別</span>
+			
+			<ul>
+				<li class="ctg_1"><a href="javascript:;">全部類別</a></li>
+				<li class="ctg_2"><a href="javascript:;">資料結構與演算法</a></li>
+				<li class="ctg_3"><a href="javascript:;">程式設計</a></li>
+				<li class="ctg_4"><a href="javascript:;">資料庫</a></li>
+				<li class="ctg_5"><a href="javascript:;">通訊與網路</a></li>
+				<li class="ctg_6"><a href="javascript:;">資訊安全</a></li>
+				<li class="ctg_7"><a href="javascript:;">計算機概論</a></li>
+				<li class="ctg_8"><a href="javascript:;">關於作者</a></li>
+			</ul>
+			
+		</div>
+		<div class="catalog_select_PC">
+			<ul>
+				<li class="ctg_1"><a href="javascript:;">全部類別</a></li>
+				<li class="ctg_2"><a href="javascript:;">資料結構與演算法</a></li>
+				<li class="ctg_3"><a href="javascript:;">程式設計</a></li>
+				<li class="ctg_4"><a href="javascript:;">資料庫</a></li>
+				<li class="ctg_5"><a href="javascript:;">通訊與網路</a></li>
+				<li class="ctg_6"><a href="javascript:;">資訊安全</a></li>
+				<li class="ctg_7"><a href="javascript:;">計算機概論</a></li>
+				<li class="ctg_8"><a href="javascript:;">關於作者</a></li>
+			</ul>
+		</div>
+	</nav>
+	<article>
+		<div class="main main-large">
+			<h1>氣泡排序法</h1>
+			<h3>〈各式各樣的排序〉第一回</h3>
+			<p>又到了學期即將結束的6月，MY老師面對著總共有87份的材料科學與工程導論考卷，非常頭疼。就在上周同學們考完材導期末考，最終學期總成績也都出爐，這時老師想要知道:</p>
+			<p><ol>
+				<li>全班的前三名分別是誰</li>
+				<li>有多少人的分數低於60分，之後要安排補考</li>
+				</ol>
+			</p>
+			<p>假如完全對同學們的成績不預先作處理，那麼要達成上面的目標可能得花個3天，非常的耗時費力。這時MY老師突然想到：「不如就用之前學過的排序演算法」吧！先把同學的成績與名字做成「成績 : 名字」的鍵值對，然後按照成績從高排到低，不用一個下午就能夠很輕易的完成任務了！排序演算法的種類繁多，各有各的優缺點。這邊想要來整理幾個比較常聽到的排序方式：氣泡排序法、選擇排序法、插入排序法、快速排序法、合併排序法、堆積排序、計數排序以及桶排序法。</p>
+			<h2>氣泡排序法</h2>
+			<p>直接用圖示應該比較容易了解，讓我們先來看看圖：</p>
+			<p class="main-center"><img src="../pics/bubble_sort_fig1.png" alt="bubble_sort_fig1"></p>
+			<p>我們有一個由不同分數構成的序列，這個序列還沒有經過排序，以</p>
+			<p class="main-center"><span>[87,100,71,93,66,80]</span></p>
+			<p>來表示。我們想要用氣泡排序法將分數由大排到小。首先是第一回合，用87(第0個索引位置)跟下一個數字100(第1個索引位置)做比較，發現87<100，於是把它們兩個的位置交換，得到序列</p>
+			<p class="main-center"><span>[100,87,71,93,66,80]</span></p>
+			<p>接著把焦點移到下一位(第1個索引位置)，也就是目前分數為87的位置，去跟它的下一位71(第2個索引位置)比較。由於87>71，不需要交換，於是我們再次把焦點往後移(到第2個索引位置)，去用71跟93比較。發現到71<93，因此將兩個進行交換，此時的序列為</p>
+			<p class="main-center"><span>[100,87,93,71,66,80]</span></p>
+			<p>然後焦點換到目前71的位置(第3個索引位置)，去跟66(第4個索引位置)比較，發現不需要交換，最後把焦點移到66(第4個索引位置)去跟80(第5個索引值)比較，兩者交換之後完成第一回合的氣泡排序，此時的序列為</p>
+			<p class="main-center"><span>[100,87,93,71,80,66]</span></p>
+			<p>可以發現整個序列中的最小值(66)已經被排到整個序列的最末端，就像是氣泡一樣的跑出來。</p>
+			<p>接著進到第二回合。也是一樣從第0個索引值100開始，跟第1個索引值87比較，發現不需要交換之後把焦點移到第1個索引值87，去跟第2個索引值93比較。因為87<93，所以兩個交換位置，此時序列為</p>
+			<p class="main-center"><span>[100,93,87,71,80,66]</span></p>
+			<p>接著焦點來到第2個索引值87，跟下一位71比。因為不用交換所以焦點再次移動，來到第3個索引值71。用71跟第4個索引值80相比，把它們互相交換，此時序列為</p>
+			<p class="main-center"><span>[100,93,87,80,71,66]</span></p>
+			<p>由於第5個索引值66是已經排序過後的元素，因此這一回合的排序就到這邊結束，可以發現整個序列當中第2小的分數71被排到序列的倒數第二個位置。接著來到第三回合的排序。重複前面提到的過程去做排序，我們很驚喜的發現整個過程都不需要交換，整個序列都已經按照要求排序完成！這個時候我們有兩個選擇:</p>
+			<p><ol>
+				<li>繼續進到第四回合的排序</li>
+				<li>既然都不需要交換，表示整個序列已經排序完成，可以結束囉～</li>
+				</ol>
+			</p>
+			<p>由於MY老師是氣泡排序法的初學者，因此採用第一個選擇繼續進行，所以圖示的部分就畫出老老實實做完每一回合氣泡排序的結果。如果採用第二個選擇的話，就能夠提早結束排序過程，減少程式執行所需的步驟(優化的氣泡排序法)，早一點完成工作然後下班！</p>
+			<h2>小結</h2>
+			<p>氣泡排序法的核心思想就是<b>「判斷當前的值與下一位的值有沒有需要交換」</b>。在每一回合的時候從第0個索引值開始，一直到最後一個尚未排序過的元素都經過比較後，進到下一回合。若有n個元素需要排序，那最多需要n-1個回合，第i回合需要比較n-i次，因此總共需要(n-1)+(n-2)+..+2+1=n*(n-1)/2次，時間複雜度為O(n2)。在n很小的時候，氣泡排序法實作簡單，容易理解，是個好選擇；但是當n很大時，所需要的步驟數太多，很可能讓電腦出現像是當機的狀態，這個時候就不建議使用氣泡排序法了ಥ_ಥ</p>
+			
+			
+			
+			<footer>
+				<h2>參考資料</h2>
+				<p><a target="_blank" href="https://zh.m.wikipedia.org/zh-tw/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F">泡沫排序</a></p>
+				<p><a target="_blank" href="https://ithelp.ithome.com.tw/articles/10276184">【Day21】[演算法]-排序Sort & 氣泡排序法Bubble Sort</a></p>
+				<p><a target="_blank" href="https://hackmd.io/@Aquamay/H1nxBOLcO/https%3A%2F%2Fhackmd.io%2F%40Aquamay%2FHyyCFRj9d">泡沫排序法(Bubble Sort)</a></p>
+			</footer>
+		
+		
+		
+			
+			
+			
+			
+		</div>
+		<div class="aboutme">
+			<div class="person_info">
+				<div class="myphoto">
+					<img src="../photos/myself.jpg" alt="myself">
+				</div>
+				<div class="myinfo">
+						<h1>Michael Yang</h1>
+						<h2>E-mail: michael83988@gmail.com</h2>
+				</div>
+			</div>
+			<div class="introduction">
+				<hr>
+				<p>國立交通大學材料系奈米科技碩士班畢業(現在應該稱國立陽明交通大學ʕ •ᴥ•ʔ)。雖然非資工相關科系畢業，但本著對資工領域的興趣而開始自學相關知識，目前則專攻網頁相關知識，如HTML5、CSS3、JavaScript、Node.js。以跨領域學習者的角度來介紹資工領域相關的知識，除了加深自己對相關知識的理解，也期望同是跨領域學習的朋友們因為瀏覽我的文章而有更多不一樣的觀點可以參考。</p>
+			</div>
+		</div>
+	</article>
+	
+	<!--回到最上面的按鈕-->
+	<div id="gotop" class="gotop"><a href="#top"><img src="../pics/gotop.png" alt="gotop"></a></div>
+</body>
+</html>
