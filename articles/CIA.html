@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-tw">
+<head>               
+	<title>資訊安全的CIA</title>
+	<meta charset="utf-8">
+	<meta name="author" content="Michael Yang">
+	<meta name="keywords" content="MY學習筆記, CIA, cia, 資訊安全">
+	<meta name="description" content="「資訊安全」的議題常常在各種系統中出現，像是政府部門中個人資料是否會被其他人任意的瀏覽、企業的機密是否會被競爭對手給獲取然後藉此打擊自身……等，都是與資訊安全相關的議題...">
+	<meta name="subject" content="資訊安全的CIA">
+	<meta name="revised" content="Sunday, Sep 4th, 2022">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE-edge">
+	<link rel="stylesheet" href="../css/content.css">
+	<script type="text/javascript" src="../js/jquery-3.6.0.js"></script>
+	<script type="text/javascript" src="../js/ctg6.js"></script>
+</head>
+<body>
+	<header class="header" >
+		<div class="header_logo">
+			<img src="../pics/logo.png" alt="logo">
+		</div>
+		<div class="header_title">
+			<h1 id="top"><a href="../index.html">MY學習筆記</a></h1>
+		</div>
+		<div class="header_search">
+			<input id="search_keyword" type="text" name="search_keyword"  placeholder="搜尋" >
+			<img id="search_img" src="../pics/search.png">
+		</div>
+	</header>
+	<nav>
+		<div class="catalog_select">
+			<span><img src="../pics/catalog_select_arrow.png" alt="arrow">全部類別</span>
+			
+			<ul>
+				<li class="ctg_1"><a href="javascript:;">全部類別</a></li>
+				<li class="ctg_2"><a href="javascript:;">資料結構與演算法</a></li>
+				<li class="ctg_3"><a href="javascript:;">程式設計</a></li>
+				<li class="ctg_4"><a href="javascript:;">資料庫</a></li>
+				<li class="ctg_5"><a href="javascript:;">通訊與網路</a></li>
+				<li class="ctg_6"><a href="javascript:;">資訊安全</a></li>
+				<li class="ctg_7"><a href="javascript:;">計算機概論</a></li>
+				<li class="ctg_8"><a href="javascript:;">關於作者</a></li>
+			</ul>
+			
+		</div>
+		<div class="catalog_select_PC">
+			<ul>
+				<li class="ctg_1"><a href="javascript:;">全部類別</a></li>
+				<li class="ctg_2"><a href="javascript:;">資料結構與演算法</a></li>
+				<li class="ctg_3"><a href="javascript:;">程式設計</a></li>
+				<li class="ctg_4"><a href="javascript:;">資料庫</a></li>
+				<li class="ctg_5"><a href="javascript:;">通訊與網路</a></li>
+				<li class="ctg_6"><a href="javascript:;">資訊安全</a></li>
+				<li class="ctg_7"><a href="javascript:;">計算機概論</a></li>
+				<li class="ctg_8"><a href="javascript:;">關於作者</a></li>
+			</ul>
+		</div>
+	</nav>
+	<article>
+		<div class="main main-large">
+			<h1>資訊安全的CIA</h1>
+			<h3>資訊安全的三個重要特質</h3>
+			<p>「資訊安全」的議題常常在各種系統中出現，像是政府部門中個人資料是否會被其他人任意的瀏覽、企業的機密是否會被競爭對手給獲取然後藉此打擊自身……等，都是與資訊安全相關的議題。維持足夠的資訊安全對組織的運作非常的重要，就好比護國神山台積電假如資訊安全嚴重不足的話，所有的製程條件都被其他公司給學走，那麼台積電肯定沒辦法繼續保持它品質世界第一的地位，勢必將嚴重的影響公司的營運。也因此，確保資訊安全可說是任何人、組織或企業都必須努力達成的。</p>
+			<p></p>
+			<p>資訊安全有三個面向，分別是「機密性Confidentiality」、「完整性Integrity」與「可用性Availability」，簡稱資訊安全的CIA。這三個面向都需要達到才能夠保護個人或組織的資訊不會受到任意的侵害。那麼以下就以一些例子來介紹這三個特點吧！</p>
+			<p></p>
+			<h2>機密性Confidentiality</h2>
+			
+			<p>這個特點代表著沒有被授權的對象就沒辦法得到相關的資訊。</p>
+			
+			<p>好比說我的錢包裡有張信用卡，我不想給任何人看到上面的資訊，例如卡號、到期日、驗證碼。但很不巧的坐在我後面的後面的人他的視力有5.0，就很剛好的在我拿出錢包的時候看到了信用卡上面的資訊，並且默默地記了下來。回到家之後他就到處用我的信用卡亂買東西、訂飯店、訂機票，結果我下個月的帳單可能就莫名其妙的多出10萬塊。很明顯的，與我的信用卡相關的資訊安全機密性遭到完全的破壞了。</p>
+			
+			<h2>完整性Integrity</h2>
+			<p>代表著資訊不會被隨意的篡改。</p>
+			<p>某天第OO期的大樂透開獎，某個駭客高手他剛好買了這期的樂透，但結果槓龜，於是他惱羞成怒，駭進大樂透的系統然後把中獎號碼改成與他買的號碼一模一樣，然後開開心心的跑去領獎，資訊安全中的完整性也就此不復存在。</p>
+			<h2>可用性Availability</h2>
+			<p>取得授權的人或組織能夠使用特定的資訊。</p>
+			<p>好比說今天我辦了netflix的高級方案帳號，也繳了錢，結果我登入進去之後，卻只被開通基本方案的權限，其他像是支援高畫質/超高畫質的功能通通都不能用。也就是說我已經被授權能夠使用的資訊或功能(觀看高畫質與超高畫質的影片)卻沒辦法使用，違反了資訊安全中的可用性。</p>
+			<h2>小結</h2>
+			<p>以上就是資訊安全中的CIA。只有確實的達到這三個要求才能夠確保資訊相關的權益不受侵害。在這個網路攻擊、駭客盛行的時代中資訊安全的重要性肯定是會越來越高的！</p>
+			
+		
+			<footer>
+				<h2>參考資料</h2>
+				<p><a target="_blank" href="https://medium.com/hannah-lin/%E5%BE%9E%E9%9B%B6%E9%96%8B%E5%A7%8B%E5%AD%B8%E8%B3%87%E5%AE%89-%E4%BB%80%E9%BA%BC%E6%98%AF%E8%B3%87%E8%A8%8A%E5%AE%89%E5%85%A8-75a7a208e8db">從零開始學資安 — 什麼是資訊安全?</a></p>
+				
+			</footer>
+		
+		
+		
+			
+			
+			
+			
+		</div>
+		<div class="aboutme">
+			<div class="person_info">
+				<div class="myphoto">
+					<img src="../photos/myself.jpg" alt="myself">
+				</div>
+				<div class="myinfo">
+						<h1>Michael Yang</h1>
+						<h2>E-mail: michael83988@gmail.com</h2>
+				</div>
+			</div>
+			<div class="introduction">
+				<hr>
+				<p>國立交通大學材料系奈米科技碩士班畢業(現在應該稱國立陽明交通大學ʕ •ᴥ•ʔ)。雖然非資工相關科系畢業，但本著對資工領域的興趣而開始自學相關知識，目前則專攻網頁相關知識，如HTML5、CSS3、JavaScript、Node.js。以跨領域學習者的角度來介紹資工領域相關的知識，除了加深自己對相關知識的理解，也期望同是跨領域學習的朋友們因為瀏覽我的文章而有更多不一樣的觀點可以參考。</p>
+			</div>
+		</div>
+	</article>
+	
+	<!--回到最上面的按鈕-->
+	<div id="gotop" class="gotop"><a href="#top"><img src="../pics/gotop.png" alt="gotop"></a></div>
+</body>
+</html>

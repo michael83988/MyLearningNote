@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-tw">
+<head>               
+	<title>IP位址的分類</title>
+	<meta charset="utf-8">
+	<meta name="author" content="Michael Yang">
+	<meta name="keywords" content="MY學習筆記, ip, IP, 通訊與網路">
+	<meta name="description" content="前一回講了IPv4與IPv6之間的關係，以及網址跟IP位址之間的關聯。這回將要把焦點放在IP位址本身，看看它有什麼分類、如何處理快要不夠的IP位址、以及子網路遮罩的用途究竟是什麼...">
+	<meta name="subject" content="資訊安全的CIA">
+	<meta name="revised" content="Sunday, Aug 28th, 2022">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE-edge">
+	<link rel="stylesheet" href="../css/content.css">
+	<script type="text/javascript" src="../js/jquery-3.6.0.js"></script>
+	<script type="text/javascript" src="../js/ctg5.js"></script>
+</head>
+<body>
+	<header class="header" >
+		<div class="header_logo">
+			<img src="../pics/logo.png" alt="logo">
+		</div>
+		<div class="header_title">
+			<h1 id="top"><a href="../index.html">MY學習筆記</a></h1>
+		</div>
+		<div class="header_search">
+			<input id="search_keyword" type="text" name="search_keyword"  placeholder="搜尋" >
+			<img id="search_img" src="../pics/search.png">
+		</div>
+	</header>
+	<nav>
+		<div class="catalog_select">
+			<span><img src="../pics/catalog_select_arrow.png" alt="arrow">全部類別</span>
+			
+			<ul>
+				<li class="ctg_1"><a href="javascript:;">全部類別</a></li>
+				<li class="ctg_2"><a href="javascript:;">資料結構與演算法</a></li>
+				<li class="ctg_3"><a href="javascript:;">程式設計</a></li>
+				<li class="ctg_4"><a href="javascript:;">資料庫</a></li>
+				<li class="ctg_5"><a href="javascript:;">通訊與網路</a></li>
+				<li class="ctg_6"><a href="javascript:;">資訊安全</a></li>
+				<li class="ctg_7"><a href="javascript:;">計算機概論</a></li>
+				<li class="ctg_8"><a href="javascript:;">關於作者</a></li>
+			</ul>
+			
+		</div>
+		<div class="catalog_select_PC">
+			<ul>
+				<li class="ctg_1"><a href="javascript:;">全部類別</a></li>
+				<li class="ctg_2"><a href="javascript:;">資料結構與演算法</a></li>
+				<li class="ctg_3"><a href="javascript:;">程式設計</a></li>
+				<li class="ctg_4"><a href="javascript:;">資料庫</a></li>
+				<li class="ctg_5"><a href="javascript:;">通訊與網路</a></li>
+				<li class="ctg_6"><a href="javascript:;">資訊安全</a></li>
+				<li class="ctg_7"><a href="javascript:;">計算機概論</a></li>
+				<li class="ctg_8"><a href="javascript:;">關於作者</a></li>
+			</ul>
+		</div>
+	</nav>
+	<article>
+		<div class="main main-large">
+			<h1> IP位址的分類</h1>
+			<h3>〈網路世界中的門牌號碼〉第二回</h3>
+			<p><a href="javascript:;">前一回</a>講了IPv4與IPv6之間的關係，以及網址跟IP位址之間的關聯。這回將要把焦點放在IP位址本身，看看它有什麼分類、如何處理快要不夠的IP位址、以及子網路遮罩的用途究竟是什麼。</p>
+			<h2>IP位址的分類</h2>
+			<p>雖然如同前一回所說，單從IP位址看不出網站內容跟什麼有關，但其實這一串數字還是有一些意義在裡面。由4個0～255的數字所構成的IP位址可以區分成：</p>
+			<p><ul>
+				<li>網路位址</li>
+				<li>主機位址</li>
+				</ul>
+			</p>
+			<p>IP位址大致區分成5個類，從class A到class E，能夠在一般系統設定的是前3個類。下面用一個表格來介紹class A到class E：</p>
+			<p class="main-center"><img data-land="true" src="../pics/IP_class_fig1.png" alt="IP_class_fig1"></p>
+			<p>不同類別的網路位址所使用的位元數並不一樣。例如class A使用8個位元，class B使用16個位元。前置位元表示這個網路位址最前面的位元要放的數字(以2進位系統來看)，用來區別不同的類別。例如在class A的網路位址最前面放上0，那麼它能表示的數字範圍就只能從0到127，而在class B的網路位址最前面指定為10，那麼它的網路位址第一個數字就會從128開始，到191之間，如此就能避免重複的IP位址。</p>
+			<p class="main-center"><img data-land="true" src="../pics/IP_class_fig2.png" alt="IP_class_fig2"></p>
+			<p>屬於class A的網路雖然網段數量最少，只有126個，但是一個網段底下擁有最多的主機數量(224-2個)，適合給底下擁有非常多主機的大型組織使用。相反的，class C的網路網段數最多(221個)，但是一個網段底下的主機數量最少，只有254個，這就比較適合給小型組織使用。</p>
+			<h2>神秘的「減2」</h2>
+			<p>仔細觀察表格內容，會發現class A的網路位址有「減2」這一項。會需要減2是因為有些特殊的網路位址沒辦法真正的拿來指向特定的網段。像是0.x.x.x代表的是「本機」，也就是自己正在用的電腦；127.x.x.x表示loopback address，也就是「本機對本機」的網路，這兩個都只是內部電腦自己使用而已，所以需要被扣掉。</p>
+			<p>另外，每個IP類別的主機數量也都有「減2」這一項：當主機位址全部都是0的時候，這個IP代表的正是這個網段本身；而主機位址全部都是1的話表示在這個網段的廣播(對這個網段上的所有主機發出訊號)，所以這兩個主機位址沒辦法表示特定的主機，因此必須扣掉。</p>
+			<h2>IP位址不夠用？靠虛擬IP！</h2>
+			<p>還記得前面提到的IP位址不夠用的問題嗎？ 那麼為什麼IPv4還能夠繼續被大家使用下去呢？其實是因為這三類(class A～C)IP位址中都各有所謂的「虛擬IP」。虛擬IP是個浮動的IP位址，它是遵守DHCP(Dynamic Host Configuration Protocol)協定，由網路服務供應商或是網管人員分配的區域網路內的位址。講的白話一點，就是說這些IP位址是共用的，有人想要連上網時，就把目前沒有人用的虛擬IP分給他，等他用完之後就得把這個IP位址還回去，讓其他要上網的人繼續使用。這個共用的性質就可以解決給每個人一個固定IP造成IP數量不夠的問題了。</p>
+			<p>不同類別的虛擬IP位址如下：</p>
+			<p><ul>
+				<li>Class A: 10.0.0.0 ～ 10.255.255.255</li>
+				<li>Class B: 172.16.0.0 ～ 172.31.255.255</li>
+				<li>Class C: 192.168.0.0 ～ 192.168.255.255</li>
+				</ul>
+			</p>
+			<h2>子網路遮罩</h2>
+			<p>當我們拿到一串32個由0跟1構成的IP位址時，要區分出它的網路位址跟主機位址靠的就是子網路遮罩(netmask)。將IP位址跟子網路遮罩做and運算之後，得到的結果就是網路位址。</p>
+			<p class="main-center"><img data-land="true" src="../pics/IP_class_fig3.png" alt="IP_class_fig3"></p>
+			<p>如上圖，再次以203.66.32.35為例子。從203這個數字可知這個IP是屬於class C，所以用預設的class C子網路遮罩，把IP位址跟子網路遮罩做and運算，計算的結果203.66.32.0就是它的網路位址。而剩下的(35)就是它的主機位址囉！看到這裡或許會有個疑問，就是既然我們只要看第一個數字就可以知道它的類別，然後區分出網路位址跟主機位址(class C的話網路位址是前24個位元，主機位址是最後8個位元)，那幹嘛需要子網路遮罩呢？</p>
+			<p>讓我來看另一個例子。IP位址203.66.32.35是陽明交大奈米科技碩博士班的網頁伺服器位址，它的網段(203.66.32.0)底下預設可以有254台主機(28-2)。後來發現實際上一個網段下不會用到那麼多主機，而且還希望把這個網段再分成4個子網段，用來分配給「高分子」、「金屬材料」、「陶瓷材料」、「半導體材料」這四個領域。這個時候就可以把子網路遮罩設定成255.255.255.172，也就是說，把本該用來表示主機位址的數字當成網路位址的一部分，這樣就能夠更合理的分配網段與主機之間的關係，也方便之後的管理與廣播等等。至於為什麼要設定最後一個數字是172？預設的class C子網路遮罩是前面24個1，後面8個0，為了分出更多的網段，所以把本來1的地方繼續延伸2位，所以變成26個1，6個0。而IPv4是以8個位元為一個單位換成10進位數字，所以最後的8個2進位數字是11000000，也就是10進位的172了。</p>
+			<p class="main-center"><img data-land="true" src="../pics/IP_class_fig4.png" alt="IP_class_fig4"></p>
+			<h2>小結</h2>
+			<p>IP位址不僅僅是一串數字。從它所屬的類別能夠大致了解使用這個IP的組織規模；透過虛擬IP能夠解決IP位址不夠用的問題；藉由設定子網路遮罩能夠更加合理分配網段與主機間的關係。想當初讀大學的時候，要在宿舍使用網路前還得自己key宿舍專用的IP位址跟子網路遮罩號碼，到了現在才總算搞懂當初做這些設定的意義呢！</p>
+			
+			
+			<footer>
+				<h2>參考資料</h2>
+				<p><a target="_blank" href="http://120.105.184.250/peiyuli/unix/%E7%B6%B2%E8%B7%AF%E7%B0%A1%E4%BB%8B%E8%88%87%E6%8C%87%E4%BB%A4.htm">網路簡介與指令</a></p>
+				<p><a target="_blank" href="http://kevin.hwai.edu.tw/~kevin/material/EAssistant/IP_Class.htm">IP位址的組成</a></p>
+				<p><a target="_blank" href="https://www.google.com/search?q=%E4%BF%9D%E7%95%99IP&client=firefox-b-d&sxsrf=ALiCzsbKsKZXj2XVvcTSQaDqTJlCf39Crw%3A1660183012357&ei=5GH0YtC3FeLJmAX4o5XgBA&ved=0ahUKEwjQudrV1735AhXiJKYKHfhRBUwQ4dUDCA0&uact=5&oq=%E4%BF%9D%E7%95%99IP&gs_lcp=Cgdnd3Mtd2l6EAMyBQgAEIAEMgUIABCABDIFCAAQgAQyBggAEB4QBTIGCAAQHhAFMgYIABAeEAUyBggAEB4QBTIGCAAQHhAFOgcIIxCwAxAnOgQIIxAnOggIABCABBCxAzoRCC4QgAQQsQMQgwEQxwEQ0QM6DgguEIAEELEDEIMBENQCOggILhCxAxCDAToLCAAQgAQQsQMQgwE6BwgjEOoCECc6BQguEIAEOg4ILhCABBCxAxDHARCvAToLCC4QgAQQxwEQrwE6BQgAEKIEOgcIABAeEKIEOg0IABCxAxCDARBGEP8BOgYIABAeEARKBAhBGAFKBAhGGABQmwdYoB5g4SFoBXAAeACAAaUCiAGUC5IBBTUuNS4xmAEAoAEBsAEKyAEBwAEB&sclient=gws-wiz">保留IP位址</a></p>
+			</footer>
+		
+		
+		
+			
+			
+			
+			
+		</div>
+		<div class="aboutme">
+			<div class="person_info">
+				<div class="myphoto">
+					<img src="../photos/myself.jpg" alt="myself">
+				</div>
+				<div class="myinfo">
+						<h1>Michael Yang</h1>
+						<h2>E-mail: michael83988@gmail.com</h2>
+				</div>
+			</div>
+			<div class="introduction">
+				<hr>
+				<p>國立交通大學材料系奈米科技碩士班畢業(現在應該稱國立陽明交通大學ʕ •ᴥ•ʔ)。雖然非資工相關科系畢業，但本著對資工領域的興趣而開始自學相關知識，目前則專攻網頁相關知識，如HTML5、CSS3、JavaScript、Node.js。以跨領域學習者的角度來介紹資工領域相關的知識，除了加深自己對相關知識的理解，也期望同是跨領域學習的朋友們因為瀏覽我的文章而有更多不一樣的觀點可以參考。</p>
+			</div>
+		</div>
+	</article>
+	
+	<!--回到最上面的按鈕-->
+	<div id="gotop" class="gotop"><a href="#top"><img src="../pics/gotop.png" alt="gotop"></a></div>
+</body>
+</html>
