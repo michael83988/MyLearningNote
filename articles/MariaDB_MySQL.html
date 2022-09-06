@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="zh-tw">
+<head>               
+	<title>MariaDB與MySQL</title>
+	<meta charset="utf-8">
+	<meta name="author" content="Michael Yang">
+	<meta name="keywords" content="MY學習筆記, 資料庫, MariaDB, MySQL, 資料庫管理系統">
+	<meta name="description" content="資料庫在日常生活中使用到的機率其實相當之高，舉凡手機APP像是台鐵e訂通、全聯福利中心……，或是網站例如火車時刻表查詢、104人力銀行...">
+	<meta name="subject" content="MariaDB與MySQL">
+	<meta name="revised" content="Sunday, Sep 6th, 2022">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE-edge">
+	<link rel="stylesheet" href="../css/content.css">
+	<script type="text/javascript" src="../js/jquery-3.6.0.js"></script>
+	<script type="text/javascript" src="../js/ctg4.js"></script>
+</head>
+<body>
+	<header class="header" >
+		<div class="header_logo">
+			<img src="../pics/logo.png" alt="logo">
+		</div>
+		<div class="header_title">
+			<h1 id="top"><a href="../index.html">MY學習筆記</a></h1>
+		</div>
+		<div class="header_search">
+			<input id="search_keyword" type="text" name="search_keyword"  placeholder="搜尋" >
+			<img id="search_img" src="../pics/search.png">
+		</div>
+	</header>
+	<nav>
+		<div class="catalog_select">
+			<span><img src="../pics/catalog_select_arrow.png" alt="arrow">全部類別</span>
+			
+			<ul>
+				<li class="ctg_1"><a href="javascript:;">全部類別</a></li>
+				<li class="ctg_2"><a href="javascript:;">資料結構與演算法</a></li>
+				<li class="ctg_3"><a href="javascript:;">程式設計</a></li>
+				<li class="ctg_4"><a href="javascript:;">資料庫</a></li>
+				<li class="ctg_5"><a href="javascript:;">通訊與網路</a></li>
+				<li class="ctg_6"><a href="javascript:;">資訊安全</a></li>
+				<li class="ctg_7"><a href="javascript:;">計算機概論</a></li>
+				<li class="ctg_8"><a href="javascript:;">關於作者</a></li>
+			</ul>
+			
+		</div>
+		<div class="catalog_select_PC">
+			<ul>
+				<li class="ctg_1"><a href="javascript:;">全部類別</a></li>
+				<li class="ctg_2"><a href="javascript:;">資料結構與演算法</a></li>
+				<li class="ctg_3"><a href="javascript:;">程式設計</a></li>
+				<li class="ctg_4"><a href="javascript:;">資料庫</a></li>
+				<li class="ctg_5"><a href="javascript:;">通訊與網路</a></li>
+				<li class="ctg_6"><a href="javascript:;">資訊安全</a></li>
+				<li class="ctg_7"><a href="javascript:;">計算機概論</a></li>
+				<li class="ctg_8"><a href="javascript:;">關於作者</a></li>
+			</ul>
+		</div>
+	</nav>
+	<article>
+		<div class="main main-large">
+			<h1>MariaDB與MySQL</h1>
+			<h3>兩種資料庫管理系統的比較</h3>
+			<p>資料庫在日常生活中使用到的機率其實相當之高，舉凡手機APP像是台鐵e訂通、全聯福利中心……，或是網站例如火車時刻表查詢、104人力銀行……，或者是金融系統像是各家銀行的網路銀行、證券交易系統等等，無一不用到資料庫來儲存每個使用者或客戶的相關資料。</p>
+			<p>面對如此龐大的資料，假如此時有一個「資料庫管理系統」來幫忙我們，那麼當我們想要進行資料的建立、查詢、修改、刪除……等等操作時，只要遵照著資料庫管理系統的規則，就可以輕鬆的達成我們想要的操作。資料庫管理系統有百百種，常常可以聽到的有「MySQL」與「MariaDB」這兩個。雖然光從名字看不出來，但這兩個系統的關係可說是非比尋常。從兩家的Logo應該可以看出一點端倪(純屬個人感覺)：</p>
+			<p class="main-center"><img data-land="true" src="../pics/MariaDB_MySQL_fig1.png" alt="MariaDB_MySQL_fig1"></p>
+			<p>雖然兩隻動物不一樣，但是乍看之下都有類似的流線型輪廓，只是剛好左右相反(●’◡’●)</p>
+			<p>故事可以從MySQL的發跡開始。1995年MySQL AB這家公司創立，並且擁有MySQL這個產品。後來到了2008年同意被昇陽微系統(Sun Microsystems)給收購。後來2009年時昇陽微系統又被甲骨文公司(Oracle)給收購(相信主因是看上Java這個火紅的技術)。MySQL變成Oracle旗下的產品之一，然而Oracle本身已經有了資料庫管理系統的產品Oracle Database，想必一個外來的產品跟自家的產品互相競爭應該是Oracle不樂見的。所以雖然MySQL到了Oracle旗下之後並沒有消失(這是一個有趣的問題，為什麼不直接把MySQL給下架？)，但是能取得的資源減少了許多，而且MySQL商業版的售價被大幅的提高(在Sun時價格為599美元起，到了Oracle時售價漲到2000美元)。大家開始懷疑免費版的MySQL(MySQL Community)是否未來還會繼續存在。所以MySQL的創始人之一Michael Widenius與部分MySQL開發團隊另外開發了MariaDB這個開源(免費且能夠看得到原始碼)的資料庫管理系統。前幾個版本的版本編號與MySQL相同，直到版本5.5之後就不再跟著MySQL的版本號了，給人一種下定決心要做出差異的感覺。</p>
+			<p>這裡給出一個表格整理了MySQL與MariaDB之間的比較：</p>
+			<p class="main-center"><img data-land="true" src="../pics/MariaDB_MySQL_fig2.png" alt="MariaDB_MySQL_fig2"></p>
+			<h2>小結</h2>
+			<p>以上是關於MySQL與MariaDB這兩個資料庫管理系統的歷史回顧與簡單的介紹。至於該如何選擇要使用哪一個資料庫管理系統，除了是否需付費之外，其他像是是否有技術支援、更新頻率、開發/使用環境、未來使用趨勢…..等也都是考量的因素，就看開發者/使用者們的決定了。</p>
+			
+			<footer>
+				<h2>參考資料</h2>
+				<p><a target="_blank" href="https://www.tsg.com.tw/blog_detail209_MySQL%E6%98%AF%E4%BB%80%E9%BA%BC%EF%BC%9FMySQL%E3%80%81SQL%E8%88%87MariaDB%E5%9F%BA%E7%A4%8E%E4%BB%8B%E7%B4%B9%EF%BD%9C%E5%A4%A9%E7%9F%BD%E7%A7%91%E6%8A%80%E7%B6%B2%E9%A0%81%E8%A8%AD%E8%A8%88.htm">MySQL是什麼？MySQL、SQL與MariaDB基礎介紹｜天矽科技網頁設計</a></p>
+				<p><a target="_blank" href="https://progressbar.tw/posts/273">MariaDB 資料庫是什麼?它跟MySQL有什麼不同?</a></p>
+				<p><a target="_blank" href="https://zh.wikipedia.org/wiki/MySQL_AB">MySQL AB</a></p>
+				<p><a target="_blank" href="https://www.ithome.com.tw/news/64310">MySQL商業版漲價了！</a></p>
+				<p><a target="_blank" href="https://www.mysql.com/">MySQL官網</a></p>
+				<p><a target="_blank" href="https://mariadb.org/">MariaDB官網</a></p>
+			</footer>
+		
+		
+		
+			
+			
+			
+			
+		</div>
+		<div class="aboutme">
+			<div class="person_info">
+				<div class="myphoto">
+					<img src="../photos/myself.jpg" alt="myself">
+				</div>
+				<div class="myinfo">
+						<h1>Michael Yang</h1>
+						<h2>E-mail: michael83988@gmail.com</h2>
+				</div>
+			</div>
+			<div class="introduction">
+				<hr>
+				<p>國立交通大學材料系奈米科技碩士班畢業(現在應該稱國立陽明交通大學ʕ •ᴥ•ʔ)。雖然非資工相關科系畢業，但本著對資工領域的興趣而開始自學相關知識，目前則專攻網頁相關知識，如HTML5、CSS3、JavaScript、Node.js。以跨領域學習者的角度來介紹資工領域相關的知識，除了加深自己對相關知識的理解，也期望同是跨領域學習的朋友們因為瀏覽我的文章而有更多不一樣的觀點可以參考。</p>
+			</div>
+		</div>
+	</article>
+	
+	<!--回到最上面的按鈕-->
+	<div id="gotop" class="gotop"><a href="#top"><img src="../pics/gotop.png" alt="gotop"></a></div>
+</body>
+</html>
