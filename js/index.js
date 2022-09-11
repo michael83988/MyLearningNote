@@ -4,18 +4,18 @@
 Functions in the "index.js":
 1. _dividePage: To display the limited amount (5/page) of filtered results in a single page. It is executed automatically after "_filter" is conducted.
 2. _filter: To filter the targeted results according to the entered keyword or the chosed catalog.
-3. input_show: The "#search_img" function in the mobile layout.
+3. input_show: The function for "#search_img" in the mobile layout.
 4. _goTop: To display "#gotop" or not based on the scroll distance of page.
-5. _aboutme: When "關於作者" is clicked, information about author is shown.
+5. _aboutme: When "關於作者" is clicked, information about author is going to be shown.
 
 
-When _startFunction.init() is conducted:
+When "_startFunction.init()" is conducted:
 1. Each <a> in the navigation bar is added the "onclick" listener. When clicked, "_filter" function is conducted.
 2. Get the parameter from url then execute "_filter" function.
 3. Add "onkeydown" listener on "#search_keyword". When "enter" is pressed, "_filter" function is executed.
-4. For "#search_img", different function is added related to screen width:
-	Mobile layout: "input_show" function is added.
-	Non-mobile layout: "_filter: will be executed when clicked.
+4. For "#search_img", different function is added based on the screen width:
+	Mobile layout (<= 480 px): "input_show" function is added.
+	Non-mobile layout (> 480 px): "_filter" will be executed when clicked.
 5. "window.onscroll" event is listened to determine whether the "#gotop" appears or not.
 
 
