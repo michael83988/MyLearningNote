@@ -209,7 +209,7 @@ Code name of catalogs:
 		return {
 			init() {
 				
-				//Add "onclick" listener oon each <li> in navigation bar.
+				//Add "onclick" listener on each <li> in navigation bar.
 				$('div[class^="catalog_select"]  li[class="ctg_1"] a').attr('onclick','_filter("",1)');
 				$('div[class^="catalog_select"]  li[class="ctg_2"] a').attr('onclick','_filter("",2)');
 				$('div[class^="catalog_select"]  li[class="ctg_3"] a').attr('onclick','_filter("",3)');
