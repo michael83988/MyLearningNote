@@ -1,4 +1,4 @@
-/*About "ctg5.js"
+/*About "ctg2.js"
 
 
 Functions in the "ctg2.js":
