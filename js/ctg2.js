@@ -1,25 +1,54 @@
+/*About "ctg5.js"
 
+
+Functions in the "ctg2.js":
+1. _passParam: When a specific catalog in navigation bar is clicked or a keyword is entered, pass the related parameters through url and open "index.html".
+2. setCurrentPage: Set the navigation bar layout based on the chosed catalog.
+3. input_show: The "#search_img" function in the mobile layout.
+4. _goTop: To display "#gotop" or not based on the scroll distance of page.
+5. _aboutme: When "關於作者" is clicked, information about author is shown.
+
+
+When _startFunction.init() is conducted:
+1. Each <a> in the navigation bar is added the "onclick" listener. When clicked, "_passParam" function is conducted.
+2. Set the navigation bar layout of catalog 2.
+3. Add "onkeydown" listener on "#search_keyword". When "enter" is pressed, "_passParam" function is executed.
+4. For "#search_img", different function is added related to screen width:
+	Mobile layout: "input_show" function is added.
+	Non-mobile layout: "_passParam: will be executed when clicked.
+5. "window.onscroll" event is listened to determine whether the "#gotop" appears or not.
+
+
+Code name of catalogs:
+1: 全部類別
+2: 資料結構與演算法
+3: 程式設計
+4: 資料庫
+5: 通訊與網路
+6: 資訊安全
+7: 計算機概論
+8: 關於作者
+
+*/
 
 (function(document) {
-	//alert(1);
-	
-	var _startFunction =(function(arr) {
+	var _startFunction =(function() {
 		
-		//在url後加上參數，然後連結index.html
+		//Pass parameters of "keyword" and "catalog" to index.html then open it.
 		_passParam = function(keyword, ctg) {
 			location.assign('../index.html?keyword='+keyword+'&ctg='+ctg);
 		}
 		
 		
-		//設定目前頁面的版面配置
+		//Set layout of navigation bar based on the chosed catalog.
 		_setCurrentPage = function(ctg) {
-			//
-			//目前類別灰底藍字(for PC), span字換成所選類別(for non-PC)
-			//non-PC版
+			
+			
+			//For non-PC layout
 			var ctgName=$('.catalog_select a').eq(ctg-1).text();
 			$('.catalog_select span').html('<img src="../pics/catalog_select_arrow.png" alt="arrow">'+ctgName);
 			
-			//PC版
+			//For PC layout
 			$('.catalog_select_PC li').each(function(index,li) {
 				if(index == ctg-1) {
 					$(li).attr('data-current-ctg','true');
@@ -31,9 +60,7 @@
 			});
 		}
 		
-		
-		//手機板的search放大鏡所使用的功能
-		//click時，input出現，且按下放大鏡時開始filter
+		//Function of "#search_img" in mobile layout. When clicked, the "#search_keyword" show.
 		input_show = function () {
 			$('#search_keyword').attr('data-show','true');
 			$('#search_keyword').focus(function() {
@@ -46,7 +73,8 @@
 			$('#search_keyword').trigger('focus');
 		}
 		
-		//監聽視窗捲動事件，若往下捲動超過一定距離則顯示回到最上面的按鈕
+		
+		//When scrolling the page over specific distance, the "#gotop" show.
 		_goTop = function() {
 			var gotop = document.getElementById('gotop'); 
 			
@@ -60,23 +88,19 @@
 			
 		}
 		
-		//顯示作者資訊
+		//Function of displaying ".aboutme".
 		_aboutme = function() {
-			//將主文章(main)給隱藏
 			$('.main').css('display','none');
-			
 			_setCurrentPage(8);
 			var aboutme = $('.aboutme');
-			
 			aboutme.addClass('aboutme_show');
-			
 		}
 		
 		
 		return {
 			init() {
-				//每個類別的li加上onclick listener
-				
+
+				//Add "onclick" listener on each <li> in navigation bar.
 				$('div[class^="catalog_select"]  li[class="ctg_1"] a').attr('onclick','_passParam("",1)');
 				$('div[class^="catalog_select"]  li[class="ctg_2"] a').attr('onclick','_passParam("",2)');
 				$('div[class^="catalog_select"]  li[class="ctg_3"] a').attr('onclick','_passParam("",3)');
@@ -87,26 +111,27 @@
 				$('div[class^="catalog_select"]  li[class="ctg_8"] a').attr('onclick','_aboutme()');
 				
 				
-				//預設顯示當前類別
+				//Set the style of current page.
 				_setCurrentPage(2);	
 				
-				//search的input加上onkeydown的listener
+				
+				//Add "onkeydown" listener on "#search_keyword"
 				$('#search_keyword').keydown(function(event) {
 					if(event.which === 13) {
 						var keyword = $('#search_keyword').val();
 						_passParam(keyword,1);
 						
-						//for手機板
+						//Remove attribute "data-show" of "#search_keyword" for mobile layout.
 						$('#search_keyword').removeAttr('data-show');
 					};
 				
 				});
 				
 				
-				//針對search的放大鏡，不同螢幕寬度有不同功能
+				//For "#search_img", different function is added according to the screen width.
 				
-				//初始設定
-				//非手機板
+				//When page is loaded.
+				//For non-mobile layout.
 				if(window.innerWidth > 480) {
 					$('#search_keyword').removeAttr('data-show');
 					$('#search_img').off('click').on('click',function() {
@@ -114,15 +139,17 @@
 						_passParam(keyword,1);
 					});
 				}
-				//手機板
+				
+				//For mobile layout.
 				if(window.innerWidth <= 480) {
 					$('#search_img').on('click',input_show);
 				}
 				
 				
-				//螢幕寬度改變時
+				//When screen width is changed.
 				window.addEventListener('resize',function() {
-					//非手機板
+					
+					//For non-mobile layout.
 					if(window.innerWidth > 480) {
 						$('#search_keyword').removeAttr('data-show');
 						$('#search_img').off('click').on('click',function() {
@@ -130,45 +157,24 @@
 							_passParam(keyword,1);
 						});
 					}
-					//手機板
+					
+					//For mobile layout.
 					if(window.innerWidth <= 480) {
 						$('#search_img').on('click',input_show);
 					}
 				});
 				
 				
-				//往下捲動視窗時，出現回到最上面的按鈕(圖案)
+				//When scrolling page, trigger "_goTop" function. 
 				window.onscroll = _goTop;
 	
 			}
 		};
-	})([]);
+	})();
 	
 	document.addEventListener('readystatechange', function() {
 		if(document.readyState === 'complete') {
 			_startFunction.init();
-			
-			/*
-			// 需要的功能
-			1. _passParam傳遞參數至index.html: nav除了關於作者之外、搜尋input欄位按下enter後的內容與放大鏡onclick之後input內的內容(預設類別「全部類別」)__OK
-			2. setCurrentPage設定目前的類別(span顯示正確的目前類別、li需要灰底藍字__OK
-			3. 點選article中的h2會以該標題為關鍵字進行參數傳遞(到index.html)；預設類別「全部類別」
-			4. 垂直方向遠離頂端之後出現向上的按鈕(固定在視窗右下角)，按一下可以回到最上面__OK
-			*/
-			
-			
-			/*類別代號(class)：
-			ctg_1: 全部
-			ctg_2: 資料結構與演算法
-			ctg_3: 程式設計
-			ctg_4: 資料庫
-			ctg_5: 通訊與網路
-			ctg_6: 資訊安全
-			ctg_7: 計算機概論
-			ctg_8: 關於作者 -> 內建在每個html中__OK
-			*/
 		}
 	});
 })(document);
-
-//alert('Hello!');
