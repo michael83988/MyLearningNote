@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="zh-tw">
+<head>               
+	<title>用CSS自製toggle button</title>
+	<meta charset="utf-8">
+	<meta name="author" content="Michael Yang">
+	<meta name="keywords" content="MY學習筆記, 程式設計, css, toggle button">
+	<meta name="description" content="最近滑ig看到一個用CSS做出來很酷的效果，而且更棒的是它還附上了實作這個效果相關的html與css...">
+	<meta name="subject" content="用CSS自製toggle button">
+	<meta name="revised" content="Monday, Sep 19th, 2022">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE-edge">
+	<link rel="stylesheet" href="../css/content.css">
+	<script type="text/javascript" src="../js/jquery-3.6.0.js"></script>
+	<script type="text/javascript" src="../js/ctg3.js"></script>
+</head>
+<body>
+	<header class="header" >
+		<div class="header_logo">
+			<img src="../pics/logo.png" alt="logo">
+		</div>
+		<div class="header_title">
+			<h1 id="top"><a href="../index.html">MY學習筆記</a></h1>
+		</div>
+		<div class="header_search">
+			<input id="search_keyword" type="text" name="search_keyword"  placeholder="搜尋" >
+			<img id="search_img" src="../pics/search.png">
+		</div>
+	</header>
+	<nav>
+		<div class="catalog_select">
+			<span><img src="../pics/catalog_select_arrow.png" alt="arrow">全部類別</span>
+			
+			<ul>
+				<li class="ctg_1"><a href="javascript:;">全部類別</a></li>
+				<li class="ctg_2"><a href="javascript:;">資料結構與演算法</a></li>
+				<li class="ctg_3"><a href="javascript:;">程式設計</a></li>
+				<li class="ctg_4"><a href="javascript:;">資料庫</a></li>
+				<li class="ctg_5"><a href="javascript:;">通訊與網路</a></li>
+				<li class="ctg_6"><a href="javascript:;">資訊安全</a></li>
+				<li class="ctg_7"><a href="javascript:;">計算機概論</a></li>
+				<li class="ctg_8"><a href="javascript:;">關於作者</a></li>
+			</ul>
+			
+		</div>
+		<div class="catalog_select_PC">
+			<ul>
+				<li class="ctg_1"><a href="javascript:;">全部類別</a></li>
+				<li class="ctg_2"><a href="javascript:;">資料結構與演算法</a></li>
+				<li class="ctg_3"><a href="javascript:;">程式設計</a></li>
+				<li class="ctg_4"><a href="javascript:;">資料庫</a></li>
+				<li class="ctg_5"><a href="javascript:;">通訊與網路</a></li>
+				<li class="ctg_6"><a href="javascript:;">資訊安全</a></li>
+				<li class="ctg_7"><a href="javascript:;">計算機概論</a></li>
+				<li class="ctg_8"><a href="javascript:;">關於作者</a></li>
+			</ul>
+		</div>
+	</nav>
+	<article>
+		<div class="main main-large">
+			<h1>用CSS自製toggle button</h1>
+			<h3>〈用CSS排出好看的網頁〉第一回</h3>
+			<p>最近滑ig看到一個用CSS做出來很酷的效果，而且更棒的是它還附上了實作這個效果相關的html與css，所以想要透過這篇文章來記錄相關的程式碼，同時也會附上相關說明。首先來看看實做出來的結果：</p>
+			<p class="main-center">
+				<iframe src="toggle.html" width="400" height="200"border="0">
+				</iframe>
+			</p>
+			<p>點一下toggle button，就會在白天與晚上之間切換，實在是太酷了！忍不住把這篇ig貼文給珍藏起來(～￣▽￣)～</p>
+			<h2>HTML的部分</h2>
+			<p><pre><code>
+&lt;!doctype html&gt;
+&lt;html lang="zh-tw"&gt;
+&lt;head&gt;
+	&lt;title&gt;Toggle button&lt;/title&gt;
+	&lt;meta charset="utf-8"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;input type="checkbox" id="toggle" class="toggle--checkbox"&gt;
+	&lt;label for="toggle" class="toggle--label"&gt;
+		&lt;span class="toggle--label--background"&gt;&lt;/span&gt;
+	&lt;/label&gt;
+	&lt;div class="background"&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre></p>
+			<p>整個網頁中就只包含了這個toggle button所需的元素。首先&lt;input type=”checkbox”&gt;的部分是為了分辨目前的toggle button是處於「按了」還是「沒按」的狀態。當checkbox沒有勾選時狀態是「白天」，而有勾選時狀態屬於「晚上」。由於checkbox只是為了記錄狀態，所以實際執行時會用display:none來隱藏它。另外，&lt;div&gt;會作為除了toggle button外的背景填充用途，讓整個螢幕畫面隨著狀態切換而改變。</p>
+			<p>Toggle button的核心部分是由&lt;label&gt;與&lt;span&gt;組成。&lt;label&gt;部分構成toggle button的外框還有太陽跟月亮，而&lt;span&gt;則是白天時的雲(白色長條與點點)還有晚上時的星星(白色點點)。</p>
+			<p>了解了各個元件扮演的腳色後，再來就是核心的CSS了！</p>
+			<h2>CSS部分</h2>
+			<p><pre><code>
+:root {	/*同html；範圍需涵蓋到所有的元素，不然定義的變數在範圍外無法使用*/
+	/*用來定義變數；變數用兩個破折號「--」開頭表示*/
+	/*要使用時，就用var(--變數名)來表示*/
+
+	/*Sunny side*/
+	--blue-background: #C2E9F6;
+	--blue-border: #72cce3;
+	--blue-color:#96dcee;
+	--yellow-background:#fffaa8;
+	--yellow-border:#f5eb71;
+	
+	/*dark side*/
+	--indigo-background:#808fc7;
+	--indigo-border:#5d6baa;
+	--indigo-color:#6b7abb;
+	--gray-border:#e8e8ea;
+	--gray-dots:#e8e8ea;
+}
+
+* {
+	margin:0;
+	padding:0;
+}
+
+body {
+	display:grid;
+	place-items:center;		/*第一個參數是align-items(垂直對齊方式)，第二個參數是justify-items(水平對齊方式)；若只有寫一個參數則這個參數同時套用兩個*/
+	min-height:100vh;		/*vh是新的單位，表示螢幕視窗高度*/
+	position:relative;
+}
+
+.background {
+	position:absolute;		/*用absolute則此元素會往外層尋找position:relative|absolute|fixed|inherit(繼承前3個之一)的元素，並以它為參考點；若都找不到則會以<body>網頁頁面的左上角為定位點*/
+	left:0;
+	top:0;
+	background:var(--blue-background);
+	z-index:-1;	/*將背景的順位往後放，讓toggle button看得到*/
+	width:100%;
+	height:100%;
+	transition:all 250ms ease-in;
+}
+
+.toggle--label {
+	width:200px;
+	height:100px;
+	background:var(--blue-color);
+	border-radius:100px;
+	border:5px solid var(--blue-border);
+	display:flex;
+	position:relative;
+	transition:all 350ms ease-in;
+}
+
+.toggle--label--background {
+	width:10px;
+	height:5px;
+	border-radius:5px;
+	position:relative;
+	background:white;
+	left:135px;
+	top:45px;
+	transition:all 150ms ease-in;
+}
+
+.toggle--label--background:before {
+	content:"";
+	position:absolute;
+	top:-5px;
+	width:40px;
+	height:5px;
+	border-radius:5px;
+	background:white;
+	left:-20px;
+	transition:all 150ms ease-in;
+}
+
+.toggle--label--background:after {
+	content:"";
+	position:absolute;
+	top:5px;
+	width:40px;
+	height:5px;
+	border-radius:5px;
+	background:white;
+	left:-10px;
+	transition:all 150ms ease-in;
+}
+
+.toggle--checkbox {
+	display:none;
+}
+
+.toggle--checkbox:checked ~.background {		/* 「~」: 兄弟選擇器，會選擇跟.toggle—checkbox同一階層的特定元素；:checked表示checkbox處於被勾選的狀態 */
+	background:var(--indigo-background);
+}
+.toggle--checkbox:checked+.toggle--label {		/*「+」:緊接在.toggle--checkbox後的兄弟元素*/
+	background:var(--indigo-color);
+	border-color:var(--indigo-border);
+}
+.toggle--checkbox:checked+.toggle--label .toggle--label--background {
+	left:60px;
+	width:5px;
+}
+.toggle--checkbox:checked+.toggle--label .toggle--label--background:before {
+	width:5px;
+	top:-25px;
+}
+.toggle--checkbox:checked +.toggle--label .toggle--label--background:after {
+	width:5px;
+	left:-30px;
+	top:20px;
+}
+.toggle--checkbox:checked+.toggle--label:before {
+	background:white;
+	border-color:var(--gray-border);
+	animation-name:switch;
+	animation-duration:350ms;
+	animation-fill-mode:forwards;
+}
+.toggle--checkbox:checked+.toggle--label:after {
+	transition-delay:350ms;
+	opacity:1;
+}
+.toggle--label:before {
+	animation-name:reverse;
+	animation-duration:350ms;
+	animation-fill-mode:forwards;
+	transition:all 350ms ease-in;
+	content:"";
+	width:82px;
+	height:82px;
+	border:5px solid var(--yellow-border);
+	top:4px;
+	left:4px;
+	position:absolute;
+	border-radius:82px;
+	background:var(--yellow-background);
+}
+
+.toggle--label:after {
+	transition-delay:0ms;
+	transition:all 250ms ease-in;
+	position:absolute;
+	content:"";
+	box-shadow:var(--gray-dots) -13px 0 0 2px,var(--gray-dots) -24px 0 0 -2px;
+	left:143px;
+	top:23px;
+	width:10px;
+	height:10px;
+	border-radius:50%;
+	opacity:0;
+}
+
+@keyframes switch {
+	0% {left:4px;}
+	60% {left:4px; width:112px;}
+	100% {left:104px; width:82px;}
+}
+@keyframes reverse {
+	0% {left:104px; width:82px;}
+	60% {left:72px; width:112px;}
+	100% {left:4px;}
+}
+</code></pre></p>
+			<p>以上是實現toggle button的css內容，說明都附在程式碼的旁邊，這邊就不再多贅述囉。</p>
+			<h2>小結</h2>
+			<p>用CSS還可以做到很多酷炫的動畫，等到有看到其他作品的時候再來跟大家分享吧！</p>
+			
+			<footer>
+				<h2>參考資料</h2>
+				<p><a target="_blank" href="https://www.oxxostudio.tw/articles/202011/css-variables.html">深入理解CSS變數(CSS Variables)</a></p>
+				<p><a target="_blank" href="https://ithelp.ithome.com.tw/articles/10212202">CSS relative? absolute? 傻傻分不清楚</a></p>
+			</footer>
+		
+		
+			
+		</div>
+		<div class="aboutme">
+			<div class="person_info">
+				<div class="myphoto">
+					<img src="../photos/myself.jpg" alt="myself">
+				</div>
+				<div class="myinfo">
+						<h1>Michael Yang</h1>
+						<h2>E-mail: michael83988@gmail.com</h2>
+				</div>
+			</div>
+			<div class="introduction">
+				<hr>
+				<p>國立交通大學材料系奈米科技碩士班畢業(現在應該稱國立陽明交通大學ʕ •ᴥ•ʔ)。雖然非資工相關科系畢業，但本著對資工領域的興趣而開始自學相關知識，目前則專攻網頁相關知識，如HTML5、CSS3、JavaScript、Node.js。以跨領域學習者的角度來介紹資工領域相關的知識，除了加深自己對相關知識的理解，也期望同是跨領域學習的朋友們因為瀏覽我的文章而有更多不一樣的觀點可以參考。</p>
+			</div>
+		</div>
+	</article>
+	
+	<!--回到最上面的按鈕-->
+	<div id="gotop" class="gotop"><a href="#top"><img src="../pics/gotop.png" alt="gotop"></a></div>
+</body>
+</html>
