@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="zh-tw">
+<head>               
+	<title>實現ripple效果</title>
+	<meta charset="utf-8">
+	<meta name="author" content="Michael Yang">
+	<meta name="keywords" content="MY學習筆記, 程式設計, css, ripple, effect">
+	<meta name="description" content="又到了用CSS實現各種酷炫好看效果的時間了！這次要來實現的是ripple效果，也就是滑鼠點擊特定元件之後，會出現像是水面漣漪的情況...">
+	<meta name="subject" content="實現ripple效果">
+	<meta name="revised" content="Thursday, Sep 29th, 2022">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE-edge">
+	<link rel="stylesheet" href="../css/content.css">
+	<script type="text/javascript" src="../js/jquery-3.6.0.js"></script>
+	<script type="text/javascript" src="../js/ctg3.js"></script>
+</head>
+<body>
+	<header class="header" >
+		<div class="header_logo">
+			<img src="../pics/logo.png" alt="logo">
+		</div>
+		<div class="header_title">
+			<h1 id="top"><a href="../index.html">MY學習筆記</a></h1>
+		</div>
+		<div class="header_search">
+			<input id="search_keyword" type="text" name="search_keyword"  placeholder="搜尋" >
+			<img id="search_img" src="../pics/search.png">
+		</div>
+	</header>
+	<nav>
+		<div class="catalog_select">
+			<span><img src="../pics/catalog_select_arrow.png" alt="arrow">全部類別</span>
+			
+			<ul>
+				<li class="ctg_1"><a href="javascript:;">全部類別</a></li>
+				<li class="ctg_2"><a href="javascript:;">資料結構與演算法</a></li>
+				<li class="ctg_3"><a href="javascript:;">程式設計</a></li>
+				<li class="ctg_4"><a href="javascript:;">資料庫</a></li>
+				<li class="ctg_5"><a href="javascript:;">通訊與網路</a></li>
+				<li class="ctg_6"><a href="javascript:;">資訊安全</a></li>
+				<li class="ctg_7"><a href="javascript:;">計算機概論</a></li>
+				<li class="ctg_8"><a href="javascript:;">關於作者</a></li>
+			</ul>
+			
+		</div>
+		<div class="catalog_select_PC">
+			<ul>
+				<li class="ctg_1"><a href="javascript:;">全部類別</a></li>
+				<li class="ctg_2"><a href="javascript:;">資料結構與演算法</a></li>
+				<li class="ctg_3"><a href="javascript:;">程式設計</a></li>
+				<li class="ctg_4"><a href="javascript:;">資料庫</a></li>
+				<li class="ctg_5"><a href="javascript:;">通訊與網路</a></li>
+				<li class="ctg_6"><a href="javascript:;">資訊安全</a></li>
+				<li class="ctg_7"><a href="javascript:;">計算機概論</a></li>
+				<li class="ctg_8"><a href="javascript:;">關於作者</a></li>
+			</ul>
+		</div>
+	</nav>
+	<article>
+		<div class="main main-large">
+			<h1>實現ripple效果</h1>
+			<h3>〈用CSS排出好看的網頁〉第二回</h3>
+			<p>又到了用CSS實現各種酷炫好看效果的時間了！這次要來實現的是ripple效果，也就是滑鼠點擊特定元件之後，會出現像是<b>水面漣漪</b>的情況。直接來看看實際的例子會比較清楚(建議用電腦來看)：</p>
+			<p class="main-center">
+				<iframe src="./ripple.html" width="900" border="0" height="240">
+				</iframe>
+			</p>
+			<p>點擊任一個按鈕，當滑鼠按一下之後，就會有漣漪出現，一直按滑鼠的話就會呈現一圈圈的漣漪，是不是很酷✪ ω ✪</p>
+			<p>讓我們趕緊來看看到底該怎麼做吧！首先是HTML的部分：</p>
+			<h2>HTML</h2>
+			<p><pre><code>
+&lt;!doctype html&gt;
+&lt;html lang="zh-tw"&gt;
+&lt;head&gt;
+	&lt;title&gt;ripple effect&lt;/title&gt;
+	&lt;meta charset="utf-8"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;div class="wrapper"&gt;
+		&lt;div class="text"&gt;
+			Button ripple effect
+		&lt;/div&gt;
+		&lt;p&gt;
+			using HTML CSS & JavaScript
+		&lt;/p&gt;
+		&lt;div class="btns"&gt;
+			&lt;a href="#"&gt;Button 1 &hearts;&lt;/a&gt;
+			&lt;a href="#"&gt;Button 2 &diams;&lt;/a&gt;
+			&lt;a href="#"&gt;Button 3 &cent;&lt;/a&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre></p>
+			<p>除了文字的部分外，我們在這邊建立3個按鈕，分別是Button 1到Button 3。它們都被包在&lt;div class=”btns”&gt;中，方便之後對這三個按鈕做排版。接著是關鍵的CSS還有JavaScript部分：</p>
+			<h2>CSS</h2>
+			<p><pre><code>
+/*引用跟文字字型相關的外部資源(此資源來自google)，然後套用到整個網頁，如果引用失敗的話就套用第二個選項sans-serif*/
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+
+* {
+	margin:0;
+	padding:0;
+	outline:none;
+	box-sizing:border-box;
+	font-family:'Poppins',sans-serif;	/*使用前面引用的Poppins字型，若引用失敗就使用內檢的sans-serif字型*/
+}
+
+body {
+	display:grid;
+	place-items:center;		/*會有兩個參數，第一個表示垂直方向的對齊方式，第二個表示水平方向；若沒有寫則第一個參數會自動套用到第二個*/
+	text-align:center;
+}
+
+.wrapper {
+	background:rgba(255,255,155,0.15);	/*rgba的a表示透明度，0是完全透明，1是完全不透明*/
+	box-shadow:10px 10px 20px rgba(0,0,0,0.4);		/*實現陰影效果；參數分別代表：x方向位移/y方向位移/陰影邊緣模糊的範圍/陰影顏色*/
+	border-radius:10px;
+	padding:20px 30px;
+}
+
+.wrapper .text {
+	font-size:35px;
+	font-weight:600;
+}
+
+.wrapper p {
+	font-size:20px;
+	font-weight:500;
+	line-height:20px;
+}
+
+.wrapper .btns {
+	display:flex;
+	margin:30px 0 20px 0;
+}
+
+.btns a {
+	position:relative;	/*這邊特地設定position為relative，作為之後透過JavaScript新增的span元素的位置參考點。若沒有設定position為relative/absolute/fixed其中任一個的話，新增的span就會繼續往更外層的元素去尋找參考點，最終找到body，也就是視窗的最左上角*/
+	margin:0 20px;
+	height:60px;
+	width:200px;
+	line-height:60px;
+	color:#fff;
+	font-size:18px;
+	font-weight:500;
+	text-transform:uppercase;
+	letter-spacing:2px;		/*字母與字母之間的距離*/
+	box-shadow:0 4px 15px rgba(0,0,0,0.2);		/*x-offset/y-offset/陰影邊緣模糊的範圍/顏色*/
+	text-decoration:none;	/*&lt;a&gt;元素內的字不要加上底線*/
+}
+
+.btns a:first-child {
+/*利用linear-gradient幫按鈕上色：-90deg表示漸層的方向是從右到左(想像一個時鐘，0deg表示12點的方向，-90deg表示逆時鐘轉90度，也就是9點鐘方向*/
+	background:linear-gradient(-90deg,#f5ce62, #e85a19);
+}
+
+.btns a:nth-child(2) {
+	background:linear-gradient(-90deg, #9827ff, #ee3939);
+}
+
+.btns a:last-child {
+	background:linear-gradient(-90deg, #0162c8, #55e7fc);
+}
+
+.btns a>span {
+	position:absolute;
+	background:#fff;
+	transform:translate(-50%, -50%);	/*將span元素按照它當前的大小往-x與-y方向位移50%，就會有一圈圈漣漪從滑鼠點擊的中心往外擴散的效果！*/
+	border-radius:50%;		/*讓漣漪成為圓形*/
+	pointer-events:none;	/*讓span元素變的可以穿透，點擊到下方的a元素，才能生成新的span元素*/
+	animation:ripples 0.6s linear;		/*替span元素增加動畫*/
+}
+
+/*這個動畫效果為：一開始是一個透明度0.5的點，最後會變成完全透明、大小200px的大圓，也就是漣漪的效果*/
+@keyframes ripples {
+	0% {
+		width:0px;
+		height:0px;
+		opacity:0.5;
+	}
+	100% {
+		width:200px;
+		height:200px;
+		opacity:0;
+	}
+}
+</code></pre></p>
+			<h2>JavaScript</h2>
+			<p><pre><code>
+const buttons = document.querySelectorAll("a");		//找出所有的&lt;a&gt;元素
+buttons.forEach(button =&gt; {	//對每一個&lt;a&gt;元素做處理
+	
+	button.onclick = function(e) {		//替&lt;a&gt;元素增加onclick事件
+		let x = e.clientX - e.target.offsetLeft;	/*滑鼠點的x方向位置 - &lt;a&gt;元素左邊與視窗的距離，也就是滑鼠點的位置與&lt;a&gt;元素最左邊的相對距離*/
+		let y = e.clientY - e.target.offsetTop;	//同上，只是換成y方向*/
+		
+		let ripple = document.createElement('span');	//新增&lt;span&gt;元素
+
+//將&lt;span&gt;元素移到滑鼠點的位置
+		ripple.style.left = `${x}px`;
+		ripple.style.top = `${y}px`;
+		
+		this.appendChild(ripple);	//將&lt;span&gt;放到&lt;a&gt;中
+		setTimeout(function() {
+			ripple.remove();
+		},600);	//600ms (0.6秒)之後將剛剛的&lt;span&gt;元素移除
+	}
+});
+</code></pre></p>
+			<p>實現水面漣漪效果的架構大概是這樣的：當我們按了這三個任一個按鈕之後，會利用JavaScript創造出新的元素span，並且放在滑鼠點擊的位置。而針對span元素的CSS效果是讓它執行動畫，這個動畫讓span元素一開始是一個透明度0.5的點(大小0px)，到最後會變成大小200px、完全透明的大圈圈，也就是模仿漣漪一開始最明顯，到後面慢慢消失的狀態。詳細的說明都寫在程式碼中，這邊就不再重複說明了。等下次有新發現的厲害前端效果再跟大家分享～</p>
+			
+
+			
+		
+			
+			<footer>
+				<h2>參考資料</h2>
+				<p><a target="_blank" href="https://www.instagram.com/codingzest/">30 DAY OF JAVASCRIPT (DAY 21)</a></p>
+				<p><a target="_blank" href="https://www.oxxostudio.tw/articles/201409/pointer-events.html">穿透的 div ( pointer-events )</a></p>
+				<p><a target="_blank" href="https://ithelp.ithome.com.tw/articles/10212202">CSS relative? absolute? 傻傻分不清楚</a></p>
+			</footer>
+		
+		
+			
+		</div>
+		<div class="aboutme">
+			<div class="person_info">
+				<div class="myphoto">
+					<img src="../photos/myself.jpg" alt="myself">
+				</div>
+				<div class="myinfo">
+						<h1>Michael Yang</h1>
+						<h2>E-mail: michael83988@gmail.com</h2>
+				</div>
+			</div>
+			<div class="introduction">
+				<hr>
+				<p>國立交通大學材料系奈米科技碩士班畢業(現在應該稱國立陽明交通大學ʕ •ᴥ•ʔ)。雖然非資工相關科系畢業，但本著對資工領域的興趣而開始自學相關知識，目前則專攻網頁相關知識，如HTML5、CSS3、JavaScript、Node.js。以跨領域學習者的角度來介紹資工領域相關的知識，除了加深自己對相關知識的理解，也期望同是跨領域學習的朋友們因為瀏覽我的文章而有更多不一樣的觀點可以參考。</p>
+			</div>
+		</div>
+	</article>
+	
+	<!--回到最上面的按鈕-->
+	<div id="gotop" class="gotop"><a href="#top"><img src="../pics/gotop.png" alt="gotop"></a></div>
+</body>
+</html>

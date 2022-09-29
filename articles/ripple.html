@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-tw">
+<head>
+	<title>ripple effect</title>
+	<meta charset="utf-8">
+	<style>
+		@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+		
+		* {
+			margin:0;
+			padding:0;
+			outline:none;
+			box-sizing:border-box;
+			font-family:'Poppins',sans-serif;
+		}
+		
+		body {
+			display:grid;
+			place-items:center;	
+			text-align:center;
+			overflow-y:hidden;
+		}
+		
+		.wrapper {
+			background:rgba(255,255,155,0.15);
+			box-shadow:10px 10px 20px rgba(0,0,0,0.4);
+			border-radius:10px;
+			padding:20px 30px;
+		}
+		
+		.wrapper .text {
+			font-size:35px;
+			font-weight:600;
+		}
+		
+		.wrapper p {
+			font-size:20px;
+			font-weight:500;
+			line-height:20px;
+		}
+		
+		.wrapper .btns {
+			display:flex;
+			margin:30px 0 20px 0;
+		}
+		
+		.btns a {
+			position:relative;
+			margin:0	 20px;
+			height:60px;
+			width:200px;
+	
+			line-height:60px;
+			color:#fff;
+			font-size:18px;
+			font-weight:500;
+			text-transform:uppercase;
+			letter-spacing:2px;
+			box-shadow:0 4px 15px rgba(0,0,0,0.2);
+			text-decoration:none;
+		}
+		
+		.btns a:first-child {
+			background:linear-gradient(-90deg,#f5ce62, #e85a19);
+		}
+		
+		.btns a:nth-child(2) {
+			background:linear-gradient(-90deg, #9827ff, #ee3939);
+		}
+		
+		.btns a:last-child {
+			background:linear-gradient(-90deg, #0162c8, #55e7fc);
+		}
+		
+		.btns a>span {
+			position:absolute;
+			background:#ffa;
+			transform:translate(-50%, -50%);
+			border-radius:50%;
+			pointer-events:none;
+			animation:ripples 0.6s linear;
+		}
+		
+		@keyframes ripples {
+			0% {
+				width:0px;
+				height:0px;
+				opacity:0.5;
+			}
+			100% {
+				width:200px;
+				height:200px;
+				opacity:0;
+			}
+		}
+	</style>
+	
+</head>
+<body>
+	<div class="wrapper">
+		<div class="text">
+			Button ripple effect
+		</div>
+		<p>
+			using HTML, CSS & JavaScript
+		</p>
+		<div class="btns">
+			<a href="#">Button 1 &hearts;</a>
+			<a href="#">Button 2 &diams;</a>
+			<a href="#">Button 3 &cent;</a>
+		</div>
+	</div>
+	
+	
+	<script>
+		const buttons = document.querySelectorAll("a");
+		buttons.forEach(button => {
+			
+			button.onclick = function(e) {
+				let x = e.clientX - e.target.offsetLeft;
+				let y = e.clientY - e.target.offsetTop;
+				
+				let ripple = document.createElement('span');
+				ripple.style.left = `${x}px`;
+				ripple.style.top = `${y}px`;
+				
+				this.appendChild(ripple);
+				setTimeout(function() {
+					ripple.remove();
+				},600);
+			}
+		});
+		
+		
+				
+				
+	</script>
+</body>
+</html>
