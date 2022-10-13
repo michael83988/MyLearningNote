@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="zh-tw">
+<head>               
+	<title>Two Sum IV - Input is a BST</title>
+	<meta charset="utf-8">
+	<meta name="author" content="Michael Yang">
+	<meta name="keywords" content="MY學習筆記, 資料結構與演算法, leetcode, two sum IV, bst, binary search tree">
+	<meta name="description" content="對於想要加強自己，讓自己能夠寫出更有效率且使用更少記憶體的程式碼的人來說，LeetCode可說是一個非常好的平台...">
+	<meta name="subject" content="Two Sum IV - Input is a BST">
+	<meta name="revised" content="Wednesday, Oct 12th, 2022">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE-edge">
+	<link rel="stylesheet" href="../css/content.css">
+	<script type="text/javascript" src="../js/jquery-3.6.0.js"></script>
+	<script type="text/javascript" src="../js/ctg2.js"></script>
+</head>
+<body>
+	<header class="header" >
+		<div class="header_logo">
+			<img src="../pics/logo.png" alt="logo">
+		</div>
+		<div class="header_title">
+			<h1 id="top"><a href="../index.html">MY學習筆記</a></h1>
+		</div>
+		<div class="header_search">
+			<input id="search_keyword" type="text" name="search_keyword"  placeholder="搜尋" >
+			<img id="search_img" src="../pics/search.png">
+		</div>
+	</header>
+	<nav>
+		<div class="catalog_select">
+			<span><img src="../pics/catalog_select_arrow.png" alt="arrow">全部類別</span>
+			
+			<ul>
+				<li class="ctg_1"><a href="javascript:;">全部類別</a></li>
+				<li class="ctg_2"><a href="javascript:;">資料結構與演算法</a></li>
+				<li class="ctg_3"><a href="javascript:;">程式設計</a></li>
+				<li class="ctg_4"><a href="javascript:;">資料庫</a></li>
+				<li class="ctg_5"><a href="javascript:;">通訊與網路</a></li>
+				<li class="ctg_6"><a href="javascript:;">資訊安全</a></li>
+				<li class="ctg_7"><a href="javascript:;">計算機概論</a></li>
+				<li class="ctg_8"><a href="javascript:;">關於作者</a></li>
+			</ul>
+			
+		</div>
+		<div class="catalog_select_PC">
+			<ul>
+				<li class="ctg_1"><a href="javascript:;">全部類別</a></li>
+				<li class="ctg_2"><a href="javascript:;">資料結構與演算法</a></li>
+				<li class="ctg_3"><a href="javascript:;">程式設計</a></li>
+				<li class="ctg_4"><a href="javascript:;">資料庫</a></li>
+				<li class="ctg_5"><a href="javascript:;">通訊與網路</a></li>
+				<li class="ctg_6"><a href="javascript:;">資訊安全</a></li>
+				<li class="ctg_7"><a href="javascript:;">計算機概論</a></li>
+				<li class="ctg_8"><a href="javascript:;">關於作者</a></li>
+			</ul>
+		</div>
+	</nav>
+	<article>
+		<div class="main main-large">
+			<h1>Two Sum IV – Input is a BST</h1>
+			<h3>〈LeetCode刷起來〉第一回</h3>
+			<p>對於想要加強自己，讓自己能夠寫出更有效率且使用更少記憶體的程式碼的人來說，LeetCode可說是一個非常好的平台。它是一個提供線上刷題目的網站，目前有2千多題，題目的難度分為Easy、Medium與Hard，可以使用如JAVA、Python、C++、JavaScript……等等多種程式語言解題。題目除了說明(Description)之外，還有Discussion、Solutions與Submissions分頁，讓使用者能夠更全面的了解這個問題。每天還會自動推薦一道題目，增加刷題的趣味。</p>
+			<p>這次要來介紹的題目是Two Sum IV – Input is a BST (#653)，屬於Easy程度。來看一下它的題目說明：</p>
+			<p><pre>"Given the root of a Binary Search Tree and a target number k, return true if there exist two elements in the BST such that their sum is equal to the given target."</pre></p>
+			<p>另外還有兩張圖示：</p>
+			<p class="main-center"><img data-land="true" src="../pics/two_sum_IV_fig1.png" alt="two_sum_IV_fig1"></p>
+			<p class="main-center"><img data-land="true" src="../pics/two_sum_IV_fig2.png" alt="two_sum_IV_fig2"></p>
+			<p>關於這題有一些前提：</p>
+			<p><ul>
+				<li>The number of nodes in the tree is in the range [1, 10<sup>4</sup>].</li>
+				<li>-10<sup>4</sup> <= Node.val <= 10<sup>4</sup></li>
+				<li><i>root</i> is guaranteed to be a valid binary search tree.</li>
+				<li>-10<sup>5</sup> <= k <= 10<sup>5</sup></li>
+				</ul>
+			</p>
+			<p>題目想要問的是：有一個Binary Search Tree(BST)的結構，題目會提供這個BST的根結點(以上面的例子來看，就是5這個節點)，還會提供一個k值，想要請我們寫出一個函式，可以用來判斷假如這個BST中有任意兩個節點的值的和等於k，則return true，反之則return false。</p>
+			<p>至於前提的部分不外乎是節點數量以及節點數值的限制。另外有一個特別的敘述是說這是個<b>valid BST</b>，這代表著在這個<b>BST中每個節點的值都不會重複</b>。不曉得大家會怎麼解這一題呢？這邊提供其中一個解法供大家參考。</p>
+			<h2>參考解法</h2>
+			<p>來敘述一下解題的邏輯：</p>
+			<p><ol>
+				<li>將BST中的所有節點的數值放進一個Set物件中</li>
+				<li>遍歷這個Set物件中的每一個值，針對當前的值x去判斷在這個Set物件中是否存在(k-x)的值，若有的話就return true</li>
+				<li>遍歷完整個Set之後，若都沒有觸發return true的情況，就return false</li>
+				</ol>
+			</p>
+			<p>Set物件是一個可以儲存唯一值的容器。由於題目限制輸入的是一個valid BST，所以用Set物件儲存每個節點的值是適用的，不會因為有重複值而導致某些點被忽略掉的情況。以下是程式碼：</p>
+			<h2>程式碼(JavaScript)</H2>
+			<p><pre><code>
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @param {number} k
+ * @return {boolean}
+ */
+ 
+ var findTarget = function(root, k) {
+    let set = new Set();
+    let result = false;
+    addVal = root => {
+        if(!root) return;
+        set.add(root.val);
+        addVal(root.left);
+        addVal(root.right);
+    }
+    addVal(root);
+
+   set.forEach(val => {
+       let target = k - val;
+        if(set.has(target) && target != val) result = true;
+   });
+    return result;   
+};
+</code></pre></p>
+			<p>附上執行的結果，期待下次的刷題！</p>
+			<p class="main-center"><img data-land="true" src="../pics/two_sum_IV_fig3.png" alt="two_sum_IV_fig3"></p>
+			
+			<footer>
+				<h2>參考資料</h2>
+				<p><a target="_blank" href="https://hackmd.io/@Ji0m0/B1dUOaRjN/https%3A%2F%2Fhackmd.io%2F%40Ji0m0%2FBkgKmiIdO">No. 98 - Validate Binary Search Tree</a></p>
+				<p><a target="_blank" href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Set">MDN web docs：Set</a></p>
+				<p><a target="_blank" href="https://leetcode.com/problems/two-sum-iv-input-is-a-bst/description/">653. Two Sum IV – Input is a BST</a></p>
+			</footer>
+		
+		
+		
+			
+		</div>
+		<div class="aboutme">
+			<div class="person_info">
+				<div class="myphoto">
+					<img src="../photos/myself.jpg" alt="myself">
+				</div>
+				<div class="myinfo">
+						<h1>Michael Yang</h1>
+						<h2>E-mail: michael83988@gmail.com</h2>
+				</div>
+			</div>
+			<div class="introduction">
+				<hr>
+				<p>國立交通大學材料系奈米科技碩士班畢業(現在應該稱國立陽明交通大學ʕ •ᴥ•ʔ)。雖然非資工相關科系畢業，但本著對資工領域的興趣而開始自學相關知識，目前則專攻網頁相關知識，如HTML5、CSS3、JavaScript、Node.js。以跨領域學習者的角度來介紹資工領域相關的知識，除了加深自己對相關知識的理解，也期望同是跨領域學習的朋友們因為瀏覽我的文章而有更多不一樣的觀點可以參考。</p>
+			</div>
+		</div>
+	</article>
+	
+	<!--回到最上面的按鈕-->
+	<div id="gotop" class="gotop"><a href="#top"><img src="../pics/gotop.png" alt="gotop"></a></div>
+</body>
+</html>
