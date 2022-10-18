@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-tw">
+<head>               
+	<title>複製Repository</title>
+	<meta charset="utf-8">
+	<meta name="author" content="Michael Yang">
+	<meta name="keywords" content="MY學習筆記,程式設計, github, copy repository, git, 文字工作者的社交平台">
+	<meta name="description" content="這回要來談談如何將一個repository進行複製。會想要複製一個repository大概有兩個情況...">
+	<meta name="subject" content="複製Repository">
+	<meta name="revised" content="Tuesday, Oct 18th, 2022">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE-edge">
+	<link rel="stylesheet" href="../css/content.css">
+	<script type="text/javascript" src="../js/jquery-3.6.0.js"></script>
+	<script type="text/javascript" src="../js/ctg3.js"></script>
+</head>
+<body>
+	<header class="header" >
+		<div class="header_logo">
+			<img src="../pics/logo.png" alt="logo">
+		</div>
+		<div class="header_title">
+			<h1 id="top"><a href="../index.html">MY學習筆記</a></h1>
+		</div>
+		<div class="header_search">
+			<input id="search_keyword" type="text" name="search_keyword"  placeholder="搜尋" >
+			<img id="search_img" src="../pics/search.png">
+		</div>
+	</header>
+	<nav>
+		<div class="catalog_select">
+			<span><img src="../pics/catalog_select_arrow.png" alt="arrow">全部類別</span>
+			
+			<ul>
+				<li class="ctg_1"><a href="javascript:;">全部類別</a></li>
+				<li class="ctg_2"><a href="javascript:;">資料結構與演算法</a></li>
+				<li class="ctg_3"><a href="javascript:;">程式設計</a></li>
+				<li class="ctg_4"><a href="javascript:;">資料庫</a></li>
+				<li class="ctg_5"><a href="javascript:;">通訊與網路</a></li>
+				<li class="ctg_6"><a href="javascript:;">資訊安全</a></li>
+				<li class="ctg_7"><a href="javascript:;">計算機概論</a></li>
+				<li class="ctg_8"><a href="javascript:;">關於作者</a></li>
+			</ul>
+			
+		</div>
+		<div class="catalog_select_PC">
+			<ul>
+				<li class="ctg_1"><a href="javascript:;">全部類別</a></li>
+				<li class="ctg_2"><a href="javascript:;">資料結構與演算法</a></li>
+				<li class="ctg_3"><a href="javascript:;">程式設計</a></li>
+				<li class="ctg_4"><a href="javascript:;">資料庫</a></li>
+				<li class="ctg_5"><a href="javascript:;">通訊與網路</a></li>
+				<li class="ctg_6"><a href="javascript:;">資訊安全</a></li>
+				<li class="ctg_7"><a href="javascript:;">計算機概論</a></li>
+				<li class="ctg_8"><a href="javascript:;">關於作者</a></li>
+			</ul>
+		</div>
+	</nav>
+	<article>
+		<div class="main main-large">
+			<h1>複製Repository</h1>
+			<h3>〈GitHub：文字工作者的社交平台〉第二回</h3>
+			<p>這回要來談談如何將一個repository進行複製。會想要複製一個repository大概有兩個情況：</p>
+			<p><ol>
+				<li>將別人的repository複製到自己這邊，然後以此為基礎去做開發。</li>
+				<li>想要將在雲端(網路)上的repository複製到自己的電腦裡，然後在不需要網路的環境下進行修改。</li>
+				</ol>
+			</p>
+			<p>如果是從複製的repository目的地來看的話(複製的repository要放在哪裡)，又可以分成兩種情況：</p>
+			<p><ol>
+				<li>放在雲端(GitHub平台)</li>
+				<li>放在自己的電腦</li>
+				</ol>
+			</p>
+			<p>根據複製的repository要放的地方的不同，會需要用不同的方式，以下就來做個簡單的介紹～</p>
+			<h2>放在雲端(GitHub平台)</h2>
+			<p>這個非常的簡單。首先要點開目標的repository。假設想要複製的repository是這個：<a href="https://github.com/octocat/Spoon-Knife" target="_blank">octocat/Spoon-Knife</a> (這是個demo用的repository)。點開之後會看到這個畫面：</p>
+			<p class="main-center"><img data-land="true" src="../pics/copy_repo_fig1.png" alt="copy_repo_fig1"></p>
+			<p>接著點畫面右上部分的Fork，來到這個畫面：</p>
+			<p class="main-center"><img data-land="true" src="../pics/copy_repo_fig2.png" alt="copy_repo_fig2"></p>
+			<p>Owner、Repository name還有Description都可以自己選擇/自訂，這裡就用預設的就好。都好了之後就按下綠色按鈕”Create fork”。完成之後就會長這樣：</p>
+			<p class="main-center"><img data-land="true" src="../pics/copy_repo_fig3.png" alt="copy_repo_fig3"></p>
+			<p>可以發現左上角已經變成michael83988/Spoon-Knife了！表示這個repository已經成功複製到自己的github中囉！再來就可以參考<a>前一回</a>的教學來使用這個repository了～</p>
+			<h2>放在自己的電腦</h2>
+			<p>這個稍微複雜一點，需要寫一些指令。不過也不用擔心，只會用到幾個指令而已(❁´◡`❁)</p>
+			<p>首先呢，最重要的是要先下載Git。到以下的網站，選擇適合自己電腦的版本下載。</p>
+			<p class="main-center"><span><a href="https://git-scm.com/downloads" target="_blank">git --fast-version-control</a></span></p>
+			<p>通通都好了之後，需要打開Git Bash(Git相關的指令要在這裡輸入)，畫面大概長這樣：</p>
+			<p class="main-center"><img data-land="true" src="../pics/copy_repo_fig4.png" alt="copy_repo_fig4"></p>
+			<p>再來，先切回到GitHub網頁，點開想要複製到電腦上的repository。以剛剛的Spoon-Knife為例。點開Code綠色鈕，然後在HTTPS分頁點選「複製」圖案，將網址複製。網址代表了這個repository本身，等等複製的時候會用到。</p>
+			<p class="main-center"><img data-land="true" src="../pics/copy_repo_fig5.png" alt="copy_repo_fig5"></p>
+			<p>好了之後回到Git Bash。先把當前的目錄切換到準備用來儲存repository的資料夾。這邊來介紹一個指令：</p>
+			<p class="main-center"><span>$ cd [目標的資料夾]</span></p>
+			<p>例如：我想要切換到D槽的myclone資料夾，就輸入以下的指令：</p>
+			<p class="main-center"><span>$ cd d://myclone</span></p>
+			<p>然後按下enter。畫面會變成這樣，表示當前目錄已經成功切換。</p>
+			<p class="main-center"><img data-land="true" src="../pics/copy_repo_fig6.png" alt="copy_repo_fig6"></p>
+			<p>再來就是重頭戲了。要把存在GitHub的repository複製到自己的電腦上。需要用到另一個指令：</p>
+			<p class="main-center"><span>$ git clone [repository的網址]</span></p>
+			<p>網址的部分就是前面複製的那一個。輸入：</p>
+			<p class="main-center"><span>$ git clone https://github.com/michael83988/Spoon-Knife.git</span></p>
+			<p>之後按enter執行。完成之後如下：</p>
+			<p class="main-center"><img data-land="true" src="../pics/copy_repo_fig7.png" alt="copy_repo_fig7"></p>
+			<p>接著到D槽的myclone資料夾下看看，就發現多了一個Spoon-Knife的資料夾囉！裡面的內容也的確跟在GitHub上的一模一樣！</p>
+			<p class="main-center"><img data-land="true" src="../pics/copy_repo_fig8.png" alt="copy_repo_fig8"></p>
+			<h2>小結</h2>
+			<p>透過GitHub上repository的fork功能，我們成功的把別人的repository複製到自己這邊；透過Git Bash的操作，我們也成功的把repository從網路上複製到自己的電腦裡。再來可能會有的問題應該就是<b>如何將網路上repository的修改更新到自己的電腦</b>，以及<b>在本機端所做的修改如何上傳到網路上的repository</b>吧？這部分就需要比較多Git指令的操作，等之後的文章再來揭曉如何使用吧～</p>
+			
+			
+			
+			
+			<footer>
+				<h2>參考資料</h2>
+				<p><a target="_blank" href="https://docs.github.com/en/get-started/quickstart/fork-a-repo">Fork a repo</a></p>
+				
+			</footer>
+		
+		
+		
+			
+		</div>
+		<div class="aboutme">
+			<div class="person_info">
+				<div class="myphoto">
+					<img src="../photos/myself.jpg" alt="myself">
+				</div>
+				<div class="myinfo">
+						<h1>Michael Yang</h1>
+						<h2>E-mail: michael83988@gmail.com</h2>
+				</div>
+			</div>
+			<div class="introduction">
+				<hr>
+				<p>國立交通大學材料系奈米科技碩士班畢業(現在應該稱國立陽明交通大學ʕ •ᴥ•ʔ)。雖然非資工相關科系畢業，但本著對資工領域的興趣而開始自學相關知識，目前則專攻網頁相關知識，如HTML5、CSS3、JavaScript、Node.js。以跨領域學習者的角度來介紹資工領域相關的知識，除了加深自己對相關知識的理解，也期望同是跨領域學習的朋友們因為瀏覽我的文章而有更多不一樣的觀點可以參考。</p>
+			</div>
+		</div>
+	</article>
+	
+	<!--回到最上面的按鈕-->
+	<div id="gotop" class="gotop"><a href="#top"><img src="../pics/gotop.png" alt="gotop"></a></div>
+</body>
+</html>
