@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="zh-tw">
+<head>               
+	<title>文字顏色漸變效果</title>
+	<meta charset="utf-8">
+	<meta name="author" content="Michael Yang">
+	<meta name="keywords" content="MY學習筆記,程式設計, 文字顏色漸變, 用CSS排出好看的網頁, filter, css, text color animation, hue, hue-rotate">
+	<meta name="description" content="這次的CSS排版想要實現的是文字顏色漸變的動畫，先來直接看看效果...">
+	<meta name="subject" content="文字顏色漸變效果">
+	<meta name="revised" content="Saturday, Nov 5th, 2022">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE-edge">
+	<link rel="stylesheet" href="../css/content.css">
+	<script type="text/javascript" src="../js/jquery-3.6.0.js"></script>
+	<script type="text/javascript" src="../js/ctg3.js"></script>
+</head>
+<body>
+	<header class="header" >
+		<div class="header_logo">
+			<img src="../pics/logo.png" alt="logo">
+		</div>
+		<div class="header_title">
+			<h1 id="top"><a href="../index.html">MY學習筆記</a></h1>
+		</div>
+		<div class="header_search">
+			<input id="search_keyword" type="text" name="search_keyword"  placeholder="搜尋" >
+			<img id="search_img" src="../pics/search.png">
+		</div>
+	</header>
+	<nav>
+		<div class="catalog_select">
+			<span><img src="../pics/catalog_select_arrow.png" alt="arrow">全部類別</span>
+			
+			<ul>
+				<li class="ctg_1"><a href="javascript:;">全部類別</a></li>
+				<li class="ctg_2"><a href="javascript:;">資料結構與演算法</a></li>
+				<li class="ctg_3"><a href="javascript:;">程式設計</a></li>
+				<li class="ctg_4"><a href="javascript:;">資料庫</a></li>
+				<li class="ctg_5"><a href="javascript:;">通訊與網路</a></li>
+				<li class="ctg_6"><a href="javascript:;">資訊安全</a></li>
+				<li class="ctg_7"><a href="javascript:;">計算機概論</a></li>
+				<li class="ctg_8"><a href="javascript:;">關於作者</a></li>
+			</ul>
+			
+		</div>
+		<div class="catalog_select_PC">
+			<ul>
+				<li class="ctg_1"><a href="javascript:;">全部類別</a></li>
+				<li class="ctg_2"><a href="javascript:;">資料結構與演算法</a></li>
+				<li class="ctg_3"><a href="javascript:;">程式設計</a></li>
+				<li class="ctg_4"><a href="javascript:;">資料庫</a></li>
+				<li class="ctg_5"><a href="javascript:;">通訊與網路</a></li>
+				<li class="ctg_6"><a href="javascript:;">資訊安全</a></li>
+				<li class="ctg_7"><a href="javascript:;">計算機概論</a></li>
+				<li class="ctg_8"><a href="javascript:;">關於作者</a></li>
+			</ul>
+		</div>
+	</nav>
+	<article>
+		<div class="main main-large">
+			<h1>文字顏色漸變效果</h1>
+			<h3>〈用CSS排出好看的網頁〉第三回</h3>
+			<p>這次的CSS排版想要實現的是文字顏色漸變的動畫，先來直接看看效果：</p>
+			<p class="main-center"><iframe width="500" height="100" overflow="scroll" src="text_color_animation.html"></p>
+			</iframe>
+			<p>看起來非常的有氣氛對吧？接著就來看看是怎麼做到的吧！</p>
+			<h2>設計概念</h2>
+			<p>實現這個效果的核心是<b>使用CSS的filter(濾鏡)</b>這個屬性。使用的方式為在需要加濾鏡的元素CSS中加入</p>
+			<p class="main-center"><span>filter : 關鍵字(參數)</span></p>
+			<p>好比說寫filter : blur(3px)，表示說濾鏡的效果是將元素變模糊，模糊的程度透過參數來設定。數值越大越模糊；這裡我們要使用filter : hue-rotate(數值deg)這個敘述。它可以調整顏色的hue值。把hue值想像成一個環，不同的角度對應不同的顏色。0deg(0度)對應的是紅色，240deg(240度)對應的是藍色，依此類推。而<b>hue-rotate中的參數就表示把hue值加(或減)多少度</b>。</p>
+			<p class="main-center"><img src="../pics/text_effect_filter_fig1.png" alt="text_effect_filter_fig1"></p>
+			<p>了解filter : hue-rotate(?deg)之後，再來就是用動畫(animation)的方式去動態的改變參數(?deg)，並且讓動畫無限次循環播放，就能夠達到上面的效果了。接著就是程式碼的部分囉！</p>
+			<h2>HTML</h2>
+			<p><pre><code>
+&lt;!doctype html&gt;
+&lt;html lang="zh-tw"&gt;
+&lt;head&gt;
+	&lt;title&gt;Text Color Animation&lt;/title&gt;
+	&lt;meta charset="utf-8"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;ul&gt;
+		&lt;li&gt;
+			&lt;div&gt;M&lt;/div&gt;
+		&lt;/li&gt;
+		&lt;li&gt;
+			&lt;div&gt;i&lt;/div&gt;
+		&lt;/li&gt;
+		&lt;li&gt;
+			&lt;div&gt;c&lt;/div&gt;
+		&lt;/li&gt;
+		&lt;li&gt;
+			&lt;div&gt;h&lt;/div&gt;
+		&lt;/li&gt;
+		&lt;li&gt;
+			&lt;div&gt;a&lt;/div&gt;
+		&lt;/li&gt;
+		&lt;li&gt;
+			&lt;div&gt;e&lt;/div&gt;
+		&lt;/li&gt;
+		&lt;li&gt;
+			&lt;div&gt;l&lt;/div&gt;
+		&lt;/li&gt;
+	&lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre></p>
+			<p>利用&lt;ul&gt;&lt;/ul&gt;與&lt;li&gt;&lt;/li&gt;分別將要實現文字顏色漸變的字母給建立起來。再來是CSS的部分。</p>
+			<h2>CSS</h2>
+			<p><pre><code>
+body {
+	padding : 0;
+	margin : 0;
+	height : 100 vh;
+	background : #2a2734;
+	font-family : sans-serif;
+	display : flex;
+	justify-content : center;
+	align-items : center;
+}
+
+ul {
+	display : flex;
+	width : 100vw;
+}
+
+li {
+	list-style : none;
+}
+
+div {
+	height : 60px;
+	width : 60px;
+	display : flex;
+	justify-content : center;
+	align-items : center;
+	font-size : 50px;
+	cursor : pointer;
+	
+	/*2的適當的陰影搭配，效果很酷炫*/
+	text-shadow : 0 0 15px yellow, 0 0 25px yellow;
+	color : yellow;
+	animation : text-change 2s linear infinite;
+}
+
+@keyframes text-change {
+	0% {
+		/*filter的使用，當作在使用濾鏡即可*/
+		filter : hue-rotate(0deg);
+	}
+	
+	100% {
+		filter : hue-rotate(360deg);
+	}
+}
+</code></pre></p>
+			<p>比較特別的部分是，在div的樣式設定中，使用了text-shadow設定文字的陰影，分別用了0 0 15px yellow與0 0 25px yellow兩個設定，這樣就會讓文字有自己發光的效果。</p>
+			<p>另外就是動畫的設定。利用@keyframes [動畫名]做自訂動畫，並且將文字用</p>
+			<p class="main-center"><span>animation : [動畫名] 秒數 播放時間分配 重複次數</span></p>
+			<p>來套用自訂的動畫。當中的0%與100%表示的是時間點，0%是一開始，而100%是動畫結束時。在0%時hue-rotate的參數是0deg，也就是正常顯示顏色；在100%時hue-rotate(360deg)，在動畫播放完時，hue值剛好轉了一圈(加了360度)回到原點。所以整個動畫所呈現的，就是在動畫播放時間內，原本的hue值按照色環的顏色順序逆時鐘轉了一圈回到原本的顏色，也就完成了酷炫的文字顏色漸變的效果囉( •̀ ω •́ )✧</p>
+			
+			
+			
+			<footer>
+				<h2>參考資料</h2>
+				<p><a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/hue-rotate">hue-rotate()</a></p>
+				<p><a target="_blank" href="https://en.m.wikipedia.org/wiki/Hue">Hue</a></p>
+				<p><a target="_blank" href="https://www.w3.org/Style/Examples/007/text-shadow.zh_HK.html">TEXT SHADOWS</a></p>
+				<p><a target="_blank" href="https://www.instagram.com/vlt_dev">Text Color animation (HTML/CSS)</a></p>
+			</footer>
+		
+		
+		
+			
+		</div>
+		<div class="aboutme">
+			<div class="person_info">
+				<div class="myphoto">
+					<img src="../photos/myself.jpg" alt="myself">
+				</div>
+				<div class="myinfo">
+						<h1>Michael Yang</h1>
+						<h2>E-mail: michael83988@gmail.com</h2>
+				</div>
+			</div>
+			<div class="introduction">
+				<hr>
+				<p>國立交通大學材料系奈米科技碩士班畢業(現在應該稱國立陽明交通大學ʕ •ᴥ•ʔ)。雖然非資工相關科系畢業，但本著對資工領域的興趣而開始自學相關知識，目前則專攻網頁相關知識，如HTML5、CSS3、JavaScript、Node.js。以跨領域學習者的角度來介紹資工領域相關的知識，除了加深自己對相關知識的理解，也期望同是跨領域學習的朋友們因為瀏覽我的文章而有更多不一樣的觀點可以參考。</p>
+			</div>
+		</div>
+	</article>
+	
+	<!--回到最上面的按鈕-->
+	<div id="gotop" class="gotop"><a href="#top"><img src="../pics/gotop.png" alt="gotop"></a></div>
+</body>
+</html>

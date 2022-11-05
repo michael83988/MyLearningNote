@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-tw">
+<head>
+	<title>Text Color Animation</title>
+	<meta charset="utf-8">
+	<style>
+		body {
+			padding : 0;
+			margin : 0;
+			height : 100 vh;
+			width : 100vw;
+			background : #2a2734;
+			font-family : sans-serif;
+			display : flex;
+			justify-content : center;
+			align-items : center;
+		}
+		
+		ul {
+			display : flex;
+			width : 100vw;
+		}
+		
+		li {
+			list-style : none;
+		}
+		
+		div {
+			height : 60px;
+			width : 60px;
+			display : flex;
+			justify-content : center;
+			align-items : center;
+			font-size : 50px;
+			cursor : pointer;
+			
+			/*2的適當的陰影搭配，效果很酷炫*/
+			text-shadow : 0 0 15px yellow, 0 0 25px yellow;
+			color : yellow;
+			animation : text-change 2s linear infinite;
+		}
+		
+		@keyframes text-change {
+			0% {
+				/*filter的使用，當作在使用濾鏡即可*/
+				filter : hue-rotate(0deg);
+			}
+			
+			100% {
+				filter : hue-rotate(360deg);
+			}
+		}
+	</style>
+</head>
+<body>
+	<ul>
+		<li>
+			<div>M</div>
+		</li>
+		<li>
+			<div>i</div>
+		</li>
+		<li>
+			<div>c</div>
+		</li>
+		<li>
+			<div>h</div>
+		</li>
+		<li>
+			<div>a</div>
+		</li>
+		<li>
+			<div>e</div>
+		</li>
+		<li>
+			<div>l</div>
+		</li>
+	</ul>
+</body>
+</html>
