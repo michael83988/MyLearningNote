@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="zh-tw">
+<head>
+	<title>Music Player</title>
+	<meta charset="utf-8">
+	<!-- CSS only 無效? -> 新版本的Bootstrap沒有-->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+
+
+	<style>
+		* {
+			box-sizing : border-box;
+		}
+		
+		body {
+			background : #eaeaea;
+			color : #001f3f;
+			margin : 0;
+			overflow : hidden;
+		}
+		
+		.container {
+			display :flex;
+			align-items : center;
+			justify-content : center;
+			/*background : blue;*/
+			min-height : 100%;
+		}
+		
+		.player {
+			width : 480px;
+			padding : 48px 64px;
+			border-radius : 36px;
+			background : #eaeaea;
+			box-shadow : 41px 41px 82px #bebebe, -41px -41px 82px #ffffff;
+			margin : 20px;
+		}
+		
+		.player .music-name {
+			margin : 0;
+			margin-bottom : 8px;
+			text-align : center;
+		}
+		
+		.player .player-progress {
+			margin-top : 36px;
+		}
+		
+		.player .player-progress .progress-value {
+			width : 100%;
+			justify-content : space-between;
+			display : flex;
+			color : #a5aaaf;
+			font-size : 16px;
+		}
+		
+		.player .player-progress progress {
+			width : 100%;
+			height : 5px;
+			/*-webkit-開頭表示可以改變用webkit browser engine的瀏覽器中，原生的User Interface，
+			可作用在較舊版的瀏覽器上(CSS標準確定之前，各家瀏覽器已經自己實現相對應的功能)*/
+			-webkit-appearance : none;
+			
+			/*適用於新版的瀏覽器(CSS標準確定之後)*/
+			appearance : none;
+		}
+		
+		/*-webkit-progress-bar與-webkit-progress-value適用於非firfox與非ie的瀏覽器！*/
+		/*使用偽元素，需要用::；此為控制progress bar未填滿的部分*/
+		.player .player-progress progress::-webkit-progress-bar {
+			background : #c3c7cc;
+			border-radius : 3px;
+		}
+		
+		/*無效*/
+		.player .player-progress progress::progress-bar {
+			background : #c3c7cc;
+			border-radius : 3px;
+		}
+		
+		/*使用偽元素，需要用::；此為控制有數值的部分*/
+		.player .player-progress progress::-webkit-progress-value {
+			background : linear-gradient(to right, #5232c1, #12ccd0);
+			border-radius : 3px;
+		}
+		
+		/*無效*/
+		.player .player-progress progress::progress-value {
+			background : linear-gradient(to right, #5232c1, #12ccd0);
+			border-radius : 3px;
+		}
+		
+		.player .player-buttons {
+			display : flex;
+			align-items : center;
+			justify-content : center;
+			margin-top : 24px;
+			gap : 32px;
+		}
+		
+		.player .player-buttons .btn {
+			font-size : 18px;
+			width : 48px;
+			height : 48px;
+			color : #6f7275;
+			background : linear-gradient(145deg, #cacaca, #f0f0f0);
+			border : none;
+			border-radius : 50%;
+			cursor : pointer;
+			display : flex;
+			justify-content : center;
+			align-items : center;
+		}
+		
+		.player .player-buttons .btn.btn-prev, .btn.btn-next {
+			box-shadow : 5px 5px 10px #aaaaaa, -5px -5px 10px #ffffff;
+			/*display : inline-block;*/
+			margin-top : 2px;
+			margin-right : 2px;
+		}
+		
+		.player .player-buttons .btn.btn-play {
+			font-size : 36px;
+			width : 76px;
+			height : 76px;
+			border-radius : 50%
+			border : none;
+			box-shadow : 6px 6px 12px #aaaaaa, -6px -6px 12px #ffffff;
+			background : linear-gradient(to right, #5232c1, #15f1f1);
+			
+			/*設定背景為漸層顏色，並且只套用到文字(文字的顏色設為透明，才能顯示背景顏色)*/
+			/*對svg無效*/
+			-webkit-background-clip : text;
+			-webkit-text-fill-color : transparent;
+		}
+		
+		.bi-play-fill, .bi-pause-fill {
+			width : 50px;
+			height : 50px;
+			padding-left : 5px;
+		}
+		
+		.bi-rewind-fill, .bi-fast-forward-fill {
+			width : 25px;
+			height : 25px;
+		}
+		
+		@media (max-width : 768px) {
+			.player {
+				width : 100%;
+				box-shadow : none;
+				padding : 24px;
+			}
+			
+			.player .player-buttons .btn {
+				width : 40px;
+				height : 40px;
+			}
+			
+			.player .player-buttons .btn.btn-play {
+				width : 64px;
+				height : 64px;
+			}
+		}
+	</style>
+	
+</head>
+<body>
+    
+
+	<div class="container">
+		<div class="player">
+			<audio id="audio-player"></audio>
+			
+			<h2 id="music-name" class="music-name"></h2>
+			<div class="player-progress">
+				<div class="progress-value">
+					<span id="player-current-time">--:--</span>
+					<span id="player-duration">--:--</span>
+				</div>
+				<progress id="player-progress"></progress>
+			</div>
+			
+			<div class="player-buttons">
+				<button id="btn-prev" class="btn btn-prev">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-rewind-fill" viewBox="0 0 16 16">
+					  <path d="M8.404 7.304a.802.802 0 0 0 0 1.392l6.363 3.692c.52.302 1.233-.043 1.233-.696V4.308c0-.653-.713-.998-1.233-.696L8.404 7.304Z"/>
+					  <path d="M.404 7.304a.802.802 0 0 0 0 1.392l6.363 3.692c.52.302 1.233-.043 1.233-.696V4.308c0-.653-.713-.998-1.233-.696L.404 7.304Z"/>
+					</svg>
+				</button>
+				<button id="btn-play" class="btn btn-play">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+						<path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+					</svg>
+				</button>
+				<button id="btn-next" class="btn btn-next">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fast-forward-fill" viewBox="0 0 16 16">
+					  <path d="M7.596 7.304a.802.802 0 0 1 0 1.392l-6.363 3.692C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692Z"/>
+					  <path d="M15.596 7.304a.802.802 0 0 1 0 1.392l-6.363 3.692C8.713 12.69 8 12.345 8 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692Z"/>
+					</svg>
+				</button>
+			</div>
+		</div>
+	</div>
+	
+	<script>
+		const btnPlay = document.querySelector('#btn-play');
+		const btnPrev = document.querySelector('#btn-prev');
+		const btnNext = document.querySelector('#btn-next');
+		const musicName = document.querySelector('#music-name');
+		const playerCurrentTime = document.querySelector('#player-current-time');
+		const playerDuration = document.querySelector('#player-duration');
+		const playerProgress = document.querySelector('#player-progress');
+		const audioPlayer = document.querySelector('#audio-player');
+		
+		let currentMusic = 0;
+		
+		const musics = [
+			{
+				name : '白頭翁',
+				path : '../musics/Chinese_bulbul.mp3'
+			},
+			{
+				name : '領角鴞',
+				path : '../musics/Collared_Scops_Owl.mp3'
+			},
+			{
+				name : '斑鳩',
+				path : '../musics/turtle_dove.mp3'
+			}
+		];
+		
+		btnPlay.addEventListener('click', () => togglePlayMusic());
+		btnPrev.addEventListener('click',() => changeMusic(false));
+		btnNext.addEventListener('click',() => changeMusic());
+		audioPlayer.addEventListener('timeupdate',() => timeUpdate());
+		
+		const togglePlayMusic = () => {
+			if(audioPlayer.paused) {
+				audioPlayer.play();
+				
+				btnPlay.innerHTML = `
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pause-fill" viewBox="0 0 16 16">
+				  <path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z"/>
+				</svg>`;
+				
+			} else {
+				audioPlayer.pause();
+				
+				btnPlay.innerHTML = `
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+					<path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+				</svg>`;
+				
+			}
+		};
+		
+		const changeMusic = (next = true) => {
+			if(next && (currentMusic < musics.length - 1)) {
+				currentMusic++;
+				
+			} else if(!next && (currentMusic > 0)) {
+				currentMusic--;
+			} else {
+				return;
+			}
+			
+			updatePlayer();
+			togglePlayMusic();
+		};
+		
+		const updatePlayer = () => {
+			const music = musics[currentMusic];
+			musicName.innerHTML = music.name;
+			audioPlayer.src = music.path;
+		};
+		
+		const timeUpdate = () => {
+			const { currentTime, duration } = audioPlayer;
+			
+			if(isNaN(duration)) return;
+			
+			playerDuration.innerHTML = formatSecondsToMinutes(duration);
+			playerCurrentTime.innerHTML = formatSecondsToMinutes(currentTime);
+			playerProgress.max = duration;
+			playerProgress.value = currentTime;
+		};
+		
+		const formatSecondsToMinutes = (seconds) => {
+			return new Date(seconds * 1000).toISOString().slice(14, 19);
+		};
+		
+		window.onload = () => {
+			updatePlayer();
+		}
+		
+	</script>
+</body>
+</html>
