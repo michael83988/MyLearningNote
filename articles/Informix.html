@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="zh-tw">
+<head>               
+	<title>透過Informix了解資料庫相關知識</title>
+	<meta charset="utf-8">
+	<meta name="author" content="Michael Yang">
+	<meta name="keywords" content="MY學習筆記, 資料庫, Informix, MapReduce, Sharding, OLTP, OLAP">
+	<meta name="description" content="因為工作的關係，才接觸到Informix這個資料庫管理系統，不然之前提到資料庫管理系統，大家應該立刻想到的會是MySQL、MariaDB...">
+	<meta name="subject" content="透過Informix了解資料庫相關知識">
+	<meta name="revised" content="Sunday, Dec 18th, 2022">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE-edge">
+	<link rel="stylesheet" href="../css/content.css">
+	<script type="text/javascript" src="../js/jquery-3.6.0.js"></script>
+	<script type="text/javascript" src="../js/ctg4.js"></script>
+</head>
+<body>
+	<header class="header" >
+		<div class="header_logo">
+			<img src="../pics/logo.png" alt="logo">
+		</div>
+		<div class="header_title">
+			<h1 id="top"><a href="../index.html">MY學習筆記</a></h1>
+		</div>
+		<div class="header_search">
+			<input id="search_keyword" type="text" name="search_keyword"  placeholder="搜尋" >
+			<img id="search_img" src="../pics/search.png">
+		</div>
+	</header>
+	<nav>
+		<div class="catalog_select">
+			<span><img src="../pics/catalog_select_arrow.png" alt="arrow">全部類別</span>
+			
+			<ul>
+				<li class="ctg_1"><a href="javascript:;">全部類別</a></li>
+				<li class="ctg_2"><a href="javascript:;">資料結構與演算法</a></li>
+				<li class="ctg_3"><a href="javascript:;">程式設計</a></li>
+				<li class="ctg_4"><a href="javascript:;">資料庫</a></li>
+				<li class="ctg_5"><a href="javascript:;">通訊與網路</a></li>
+				<li class="ctg_6"><a href="javascript:;">資訊安全</a></li>
+				<li class="ctg_7"><a href="javascript:;">計算機概論</a></li>
+				<li class="ctg_8"><a href="javascript:;">關於作者</a></li>
+			</ul>
+			
+		</div>
+		<div class="catalog_select_PC">
+			<ul>
+				<li class="ctg_1"><a href="javascript:;">全部類別</a></li>
+				<li class="ctg_2"><a href="javascript:;">資料結構與演算法</a></li>
+				<li class="ctg_3"><a href="javascript:;">程式設計</a></li>
+				<li class="ctg_4"><a href="javascript:;">資料庫</a></li>
+				<li class="ctg_5"><a href="javascript:;">通訊與網路</a></li>
+				<li class="ctg_6"><a href="javascript:;">資訊安全</a></li>
+				<li class="ctg_7"><a href="javascript:;">計算機概論</a></li>
+				<li class="ctg_8"><a href="javascript:;">關於作者</a></li>
+			</ul>
+		</div>
+	</nav>
+	<article>
+		<div class="main main-large">
+			<h1>透過Informix了解資料庫相關知識</h1>
+			<h3>非主流的資料庫管理系統</h3>
+			<p>因為工作的關係，才接觸到Informix這個資料庫管理系統，不然之前提到資料庫管理系統，大家應該立刻想到的會是MySQL、MariaDB、Oracle Database、MongoDB、Redis之類的系統吧？來看看資料庫管理系統的排名(參考DB-ENGINES的排名)，發現在2022年12月時的排名為第35名。基本上看排名大家應該了不起只會看個前10名，第35名實在是沒什麼人會去注意。</p>
+			<h2>特別適用於OLTP</h2>
+			<p>話雖如此，仔細看了一下它的相關說明，還是有不少值得探討的特點。首先是它的官網提到的：「An embeddable database optimized for OLTP and IoT data.」。這個OLTP是OnLine Transactional Processing的簡稱。提到OLTP就得提到OLAP，下面用個表格來比較一下之間的差異：</p>
+			<p class="main-center"><img data-land="true" src="../pics/informix_fig1.png" alt="informix_fig1"></p>
+			<p>基本上，從目的來區分，就能夠清楚的區分OLTP與OLAP。<b>OLTP是為了讓很多人即時的去修改、新增、刪除資料；而OLAP是為了從現有的數據中從各個面向來做分析</b>，好比說有一筆資料是「今年在台灣賣出的SAMSUNG Galaxy Z手機數量是10000台」，那麼就可以從：
+			<p><ol>
+				<li>Galaxy Z在各個國家的銷售數量</li>
+				<li>台灣手機銷售總量中它的佔比是多少</li>
+				<li>購買Galaxy Z的消費族群分布(例如：年齡層、性別、地點……等)</li>
+				</ol>
+			</p>
+			各種不同的面向來解讀這筆數據。所以說從Informix官網上所強調的特點來看，Informix是一個適合拿來用做儲存資料用的資料庫管理系統。</p>
+			<h2>使用Sharding來做資料的partitioning</h2>
+			<p>Informix採用的是用Sharding的方式來將過多的資料做拆解然後儲存(partitioning)。先來說說為什麼資料需要做partitioning： 假設一個table有1億筆資料，要對這個table做update, select等等操作時，電腦得先將整個table讀到記憶體中，然後再根據條件(SQL中的where)去找到需要的資料，此時這麼多的資料被塞到記憶體中，想當然的電腦執行的速度就會慢下來。而sharding就是把這個有1億筆資料的table根據特定規則拆成好幾個tables，然後存到不同的database中。被拆開來的各個table其table schema都一樣，只是每個小table存的資料沒那麼多而已。</p>
+			<p>至於要根據什麼規則來拆開原本的table呢？可以分為兩種方式：
+			<p><ol>
+				<li>Range-based partitioning</li>
+				<li>Hash partitioning</li>
+				</ol>
+			</p>
+			以下面這個表格為例：</p>
+			<p class="main-center"><img data-land="true" src="../pics/informix_fig2.png" alt="informix_fig2"></p>
+			<p>Range-based partitioning就是根據某個欄位的資料，自己先劃分出一個個區塊，然後再把資料根據區塊的條件塞進各自對應的table中。假設我們以「售價<=50」跟「售價>50」分成兩個區塊，那麼拆開後的表格就變成以下的兩個表格：</p>
+			<p class="main-center"><img src="../pics/informix_fig3.png" alt="informix_fig3" data-land="true"></p>
+			<p>若是以Hash-based sharding來拆表格的話，就是先定義一個hash function，然後把特定欄位的值丟進去計算，然後根據運算結果來拆表格。假設一個hash function是這樣的：<b>「若是有出現『茶』這個字的話，就把它歸到『茶類』；若是有出現『汁』這個字的話，就歸類到『果汁類』」</b>，那麼將「品項」的值丟到hash function中做分類，最後會得出兩個表格：</p>
+			<p class="main-center"><img data-land="true" src="../pics/informix_fig4.png" alt="informix_fig4"></p>
+			<h2>不支援MapReduce</h2>
+			<p>MapReduce是分散式技術的其中一種。它可以分為Map以及Reduce兩個部分。Map就是將工作(或資料)拆成不相干的數份，丟給不同的電腦去處理，最後再透過Reduce把各個獨立的電腦處理結果做統整。能夠實現MapReduce的話對於單個硬體設備的要求就可以不用那麼高，仍然維持一定的運算效果，白話一點就是「團結力量大」。Informix不支援MapReduce，所以對於當作Server的主機需要有一定的規格要求。</p>
+			<h2>小結</h2>
+			<p>綜合以上的特性，可以把Informix這套資料庫管理系統看成是專門用在「多人頻繁的更動資料」這樣的用途上，不適合頻繁的提取資料，更別說是用來做各種的分析。不過透過這篇文章，主要是想要跟大家分享的是資料庫相關知識，未來有更多文章完成後會再與大家分享:-D</p>
+			
+				
+			
+			
+			
+			<footer>
+				<h2>參考資料</h2>
+				<p><a target="_blank" href="https://db-engines.com/en/ranking">DB-Engines Ranking</a></p>
+				<p><a target="_blank" href="https://www.ibm.com/products/informix">IBM Informix</a></p>
+				<p><a target="_blank" href="https://www.oracle.com/tw/database/what-is-oltp/">什麼是OLTP？</a></p>
+				<p><a target="_blank" href="https://blog.gmifly.tw/2020/02/23/%E4%BB%80%E9%BA%BC%E6%98%AF%E5%BB%BA%E7%AB%8B%E7%B4%A2%E5%BC%95/">什麼是建立索引</a></p>
+				<p><a target="_blank" href="https://support.microsoft.com/zh-tw/office/%E7%B7%9A%E4%B8%8A%E5%88%86%E6%9E%90%E8%99%95%E7%90%86%E8%88%87-olap-%E6%A6%82-15d2cdde-f70b-4277-b009-ed732b75fdd6">線上分析處理與OLAP(概)</a></p>
+				<p><a target="_blank" href="https://medium.com/%E7%A8%8B%E5%BC%8F%E6%84%9B%E5%A5%BD%E8%80%85/%E4%BB%80%E9%BA%BC%E6%98%AF-olap-2c7cccf55c42">什麼是OLAP？</a></p>
+				<p><a target="_blank" href="https://ithelp.ithome.com.tw/articles/10249886">【Day 23】淺淺認識Database Sharding</a></p>
+				<p><a target="_blank" href="https://www.ithome.com.tw/article/93032">MapReduce, Hadoop與NoSQL技術解說</a></p>
+			</footer>
+		
+		
+		
+			
+		</div>
+		<div class="aboutme">
+			<div class="person_info">
+				<div class="myphoto">
+					<img src="../photos/myself.jpg" alt="myself">
+				</div>
+				<div class="myinfo">
+						<h1>Michael Yang</h1>
+						<h2>E-mail: michael83988@gmail.com</h2>
+				</div>
+			</div>
+			<div class="introduction">
+				<hr>
+				<p>國立交通大學材料系奈米科技碩士班畢業(現在應該稱國立陽明交通大學ʕ •ᴥ•ʔ)。雖然非資工相關科系畢業，但本著對資工領域的興趣而開始自學相關知識，目前則專攻網頁相關知識，如HTML5、CSS3、JavaScript、Node.js。以跨領域學習者的角度來介紹資工領域相關的知識，除了加深自己對相關知識的理解，也期望同是跨領域學習的朋友們因為瀏覽我的文章而有更多不一樣的觀點可以參考。</p>
+			</div>
+		</div>
+	</article>
+	
+	<!--回到最上面的按鈕-->
+	<div id="gotop" class="gotop"><a href="#top"><img src="../pics/gotop.png" alt="gotop"></a></div>
+</body>
+</html>
