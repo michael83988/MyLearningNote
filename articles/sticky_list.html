@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="zh-tw">
+<head>               
+	<title>Sticky清單</title>
+	<meta charset="utf-8">
+	<meta name="author" content="Michael Yang">
+	<meta name="keywords" content="MY學習筆記, 程式設計, css, sticky, dl, dt, dd, rem">
+	<meta name="description" content="大家新年快樂！這次的CSS排版教學要來看到的是position : sticky這個屬性的使用，它還需要搭配top, right, left, bottom屬性...">
+	<meta name="subject" content="Sticky清單">
+	<meta name="revised" content="Sunday, Jan 1st, 2023">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE-edge">
+	<link rel="stylesheet" href="../css/content.css">
+	<script type="text/javascript" src="../js/jquery-3.6.0.js"></script>
+	<script type="text/javascript" src="../js/ctg3.js"></script>
+</head>
+<body>
+	<header class="header" >
+		<div class="header_logo">
+			<img src="../pics/logo.png" alt="logo">
+		</div>
+		<div class="header_title">
+			<h1 id="top"><a href="../index.html">MY學習筆記</a></h1>
+		</div>
+		<div class="header_search">
+			<input id="search_keyword" type="text" name="search_keyword"  placeholder="搜尋" >
+			<img id="search_img" src="../pics/search.png">
+		</div>
+	</header>
+	<nav>
+		<div class="catalog_select">
+			<span><img src="../pics/catalog_select_arrow.png" alt="arrow">全部類別</span>
+			
+			<ul>
+				<li class="ctg_1"><a href="javascript:;">全部類別</a></li>
+				<li class="ctg_2"><a href="javascript:;">資料結構與演算法</a></li>
+				<li class="ctg_3"><a href="javascript:;">程式設計</a></li>
+				<li class="ctg_4"><a href="javascript:;">資料庫</a></li>
+				<li class="ctg_5"><a href="javascript:;">通訊與網路</a></li>
+				<li class="ctg_6"><a href="javascript:;">資訊安全</a></li>
+				<li class="ctg_7"><a href="javascript:;">計算機概論</a></li>
+				<li class="ctg_8"><a href="javascript:;">關於作者</a></li>
+			</ul>
+			
+		</div>
+		<div class="catalog_select_PC">
+			<ul>
+				<li class="ctg_1"><a href="javascript:;">全部類別</a></li>
+				<li class="ctg_2"><a href="javascript:;">資料結構與演算法</a></li>
+				<li class="ctg_3"><a href="javascript:;">程式設計</a></li>
+				<li class="ctg_4"><a href="javascript:;">資料庫</a></li>
+				<li class="ctg_5"><a href="javascript:;">通訊與網路</a></li>
+				<li class="ctg_6"><a href="javascript:;">資訊安全</a></li>
+				<li class="ctg_7"><a href="javascript:;">計算機概論</a></li>
+				<li class="ctg_8"><a href="javascript:;">關於作者</a></li>
+			</ul>
+		</div>
+	</nav>
+	<article>
+		<div class="main main-large">
+			<h1>Sticky清單</h1>
+			<h3>〈用CSS排出好看的網頁〉第五回</h3>
+            <p>大家新年快樂！這次的CSS排版教學要來看到的是position : sticky這個屬性的使用，它還需要搭配top, right, left, bottom屬性來決定特定元素要被「黏貼」在畫面上的哪個位置。先來直接看看範例：</p>
+			<p class="main-center"><iframe src="../articles/sticky_contact_list.html" frameborder="0" width="600" height="300"></iframe></p>
+            <p>在範例中我將<dt>這個element「黏貼」的位置設定在距離top 0px的地方，也就是視窗最上面。從MDN的說明文件中，對於sticky的敘述如下：</p>
+            <p><b>「A stickily positioned element …… is treated as relatively positioned until its containing block crosses a specified threshold (such as setting top to value other than auto) within its flow root (or the container it scrolls within) …...」</b></p>
+            <p>意思也就是說，position設為sticky的元素在平常的時候是跟relative一樣的，但是當它被滾動超過某個臨界值(threshold)之後，就會有不一樣的表現。這個臨界值與特定的表現就是前面提到的top, bottom, left, right的設定囉！從程式碼來看應該會比較清楚，所以就直接上程式碼吧(●'◡'●)</p>
+            <h2>HTML</h2>
+            <p>
+                <pre><code>
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+&lt;title&gt;Sticky Contact List&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;!-- MDN不建議用ul與li編排清單，而是使用dl --&gt;
+&lt;!-- dl&gt;dt&gt;dd --&gt;
+&lt;div class="test"&gt;&lt;/div&gt;
+&lt;dl class="sports-list"&gt;
+&lt;dt&gt;&lt;span class="alphabat"&gt;B&lt;/span&gt;&lt;/dt&gt;
+&lt;dd&gt;
+    &lt;img src="../pics/badminton.png" alt="bandimton" class="symbol"&gt;
+    &lt;span class="full-name"&gt;Badminton&lt;/span&gt;
+&lt;/dd&gt;
+&lt;dt&gt;&lt;span class="alphabat"&gt;C&lt;/span&gt;&lt;/dt&gt;
+&lt;dd&gt;
+    &lt;img src="../pics/canoeing.png" alt="canoeing" class="symbol"&gt;
+    &lt;span class="full-name"&gt;Canoeing&lt;/span&gt;
+&lt;/dd&gt;
+&lt;dt&gt;&lt;span class="alphabat"&gt;F&lt;/span&gt;&lt;/dt&gt;
+&lt;dd&gt;
+    &lt;img src="../pics/fencing.png" alt="fencing" class="symbol"&gt;
+    &lt;span class="full-name"&gt;Fencing&lt;/span&gt;
+&lt;/dd&gt;
+&lt;dt&gt;&lt;span class="alphabat"&gt;G&lt;/span&gt;&lt;/dt&gt;
+&lt;dd&gt;
+    &lt;img src="../pics/golf.png" alt="golf" class="symbol"&gt;
+    &lt;span class="full-name"&gt;Golf&lt;/span&gt;
+&lt;/dd&gt;
+&lt;dt&gt;&lt;span class="alphabat"&gt;S&lt;/span&gt;&lt;/dt&gt;
+&lt;dd&gt;
+    &lt;img src="../pics/skateboarding.png" alt="skateboarding" class="symbol"&gt;
+    &lt;span class="full-name"&gt;Skateboarding&lt;/span&gt;
+&lt;/dd&gt;
+&lt;dt&gt;&lt;span class="alphabat"&gt;W&lt;/span&gt;&lt;/dt&gt;
+&lt;dd&gt;
+    &lt;img src="../pics/weightlifting.png" alt="weightlifting" class="symbol"&gt;
+    &lt;span class="full-name"&gt;Weightlifting&lt;/span&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+                </code></pre>
+            </p>
+            <p>HTML標籤中的&lt;dl&gt;, &lt;dt&gt;, &lt;dd&gt;分別是description list, description terms與description descriptions。使用的時機大致上就是在想要呈現一個帶有說明的清單時會用到。這裡用2020東京奧運運動項目為例，每一個英文字母下會對應1到多個以該字母為開頭的運動項目。將所需元素準備好之後，就要進入排版的部分囉。</p>
+            <h2>CSS</h2>
+            <p>
+                <pre><code>
+.sports-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    position: relative;
+}
+
+.sports-list dt {
+    padding : 0.55rem;
+    background-color: #333333;
+
+    /*Sticky header*/
+    position: sticky;
+    top: 0;
+}
+
+
+.alphabat {
+    width : 1.2rem;     /*rem:相對單位；「倍數」乘上根元素的向素值*/
+    height : 1.2rem;
+    border-radius: 50%;
+    color: white;
+    background-color: #121212;
+    font-weight: 700;
+    font-size: 0.75rem;
+    display: grid;
+    place-items: center;
+}
+
+.sports-list .symbol {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+}
+
+.sports-list dd {
+    padding: 0 0.75rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;   /*每個元素之間的距離*/
+}
+                </code></pre>
+            </p>
+            <p>當中.sport-list dt的position : sticky以及top : 0表示在class = sport-list中的所有dt元素做出「黏貼」的效果。top : 0意思代表黏貼的位置在靠近上方0 px的地方。這邊的「上方」究竟指得是哪一個元素呢？細看前面關於sticky屬性的說明，有句話是：<b>whithin its flow root (or the container it scrolls within</b>
+                。看起來好像也不知道它在說什麼，於是我做了個小實驗，在&lt;dl&gt;元素的前面加上一個長寬各200 px的div元素，在其他條件不變的情況下去滾動畫面，發現每個&lt;dt&gt;黏貼的位置仍然是在視窗畫面的最上方，所以我們可以推知這個top相對的元素應該是會有滾輪出現的元素，也就是相對於body，而不是相對於dl元素的位置！
+                    另一個值得說明的是rem這個單位。它是一個相對的單位，就是用一個「倍數」去乘上根元素的數值，通常指的是html元素。若沒有設定那default是16 px。</p>
+            <h2>小結</h2>
+            <p>基本上這篇文章簡單的實作了dl, dt, dd元素的應用搭配position : sticky的使用，用簡單的程式碼呈現出蠻酷炫的效果，希望大家會喜歡ヽ(✿ﾟ▽ﾟ)ノ</p>
+		
+			
+			<footer>
+				<h2>參考資料</h2>
+                <p><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/position" target="_blank">position</a></p>
+                <p><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dl" target="_blank">
+                        &lt;dl&gt;: The Description List element
+                    </a></p>
+                <p><a href="https://ithelp.ithome.com.tw/articles/10238827" target="_blank">CSS Relative Unit: rem vs em</a></p>
+                <p><a href="https://www.instagram.com/baby_wolf_codes/" target="_blank">baby_wolf_codes: Sticky contact list</a></p>
+                
+				
+			</footer>
+		
+		
+			
+		</div>
+		<div class="aboutme">
+			<div class="person_info">
+				<div class="myphoto">
+					<img src="../photos/myself.jpg" alt="myself">
+				</div>
+				<div class="myinfo">
+						<h1>Michael Yang</h1>
+						<h2>E-mail: michael83988@gmail.com</h2>
+				</div>
+			</div>
+			<div class="introduction">
+				<hr>
+				<p>國立交通大學材料系奈米科技碩士班畢業(現在應該稱國立陽明交通大學ʕ •ᴥ•ʔ)。雖然非資工相關科系畢業，但本著對資工領域的興趣而開始自學相關知識，目前則專攻網頁相關知識，如HTML5、CSS3、JavaScript、Node.js。以跨領域學習者的角度來介紹資工領域相關的知識，除了加深自己對相關知識的理解，也期望同是跨領域學習的朋友們因為瀏覽我的文章而有更多不一樣的觀點可以參考。</p>
+			</div>
+		</div>
+	</article>
+	
+	<!--回到最上面的按鈕-->
+	<div id="gotop" class="gotop"><a href="#top"><img src="../pics/gotop.png" alt="gotop"></a></div>
+</body>
+</html>

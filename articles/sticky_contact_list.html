@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sticky Contact List</title>
+</head>
+<body>
+    <!-- MDN不建議用ul與li編排清單，而是使用dl -->
+    <!-- dl>dt>dd -->
+    <!-- <div class="test"></div> -->
+    <dl class="sports-list">
+        <dt><span class="alphabat">B</span></dt>
+        <dd>
+            <img src="../pics/badminton.png" alt="bandimton" class="symbol">
+            <span class="full-name">Badminton</span>
+        </dd>
+        <dt><span class="alphabat">C</span></dt>
+        <dd>
+            <img src="../pics/canoeing.png" alt="canoeing" class="symbol">
+            <span class="full-name">Canoeing</span>
+        </dd>
+        <dt><span class="alphabat">F</span></dt>
+        <dd>
+            <img src="../pics/fencing.png" alt="fencing" class="symbol">
+            <span class="full-name">Fencing</span>
+        </dd>
+        <dt><span class="alphabat">G</span></dt>
+        <dd>
+            <img src="../pics/golf.png" alt="golf" class="symbol">
+            <span class="full-name">Golf</span>
+        </dd>
+        <dt><span class="alphabat">S</span></dt>
+        <dd>
+            <img src="../pics/skateboarding.png" alt="skateboarding" class="symbol">
+            <span class="full-name">Skateboarding</span>
+        </dd>
+        <dt><span class="alphabat">W</span></dt>
+        <dd>
+            <img src="../pics/weightlifting.png" alt="weightlifting" class="symbol">
+            <span class="full-name">Weightlifting</span>
+        </dd>
+    </dl>
+
+    <style>
+        .test {
+            width: 200px;
+            height: 200px;
+            background-color: gray;
+        }
+         .sports-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            /*display: block;*/
+           /* overflow: auto;*/
+           /position: relative;
+            /*top:0px;*/
+        }
+
+        .sports-list dt {
+            padding : 0.55rem;
+            background-color: #333333;
+
+            /*Sticky header*/
+            position: sticky;
+            top: 0;
+        }
+
+        
+        .alphabat {
+            width : 1.2rem;     /*rem:相對單位；「倍數」乘上根元素的向素值*/
+            height : 1.2rem;
+            border-radius: 50%;
+            color: white;
+            background-color: #121212;
+            font-weight: 700;
+            font-size: 0.75rem;
+            display: grid;
+            place-items: center;
+        }
+
+        .sports-list .symbol {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+        }
+
+        .sports-list dd {
+            padding: 0 0.75rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;   /*每個元素之間的距離*/
+        }
+
+       
+
+       
+
+    </style>
+</body>
+</html>
